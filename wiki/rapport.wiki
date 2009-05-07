@@ -1,4 +1,4 @@
-#summary Le rapport de groupe
+*#summary Le rapport de groupe
 
 Idées en vrac :
   * Présentation de l'équipe
@@ -9,3 +9,5 @@ Idées en vrac :
     * Usage (Ocean Store/Vuze)
   * PeerUnit
   * planx
+
+*Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
