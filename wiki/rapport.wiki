@@ -1,0 +1,61 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+
+
+
+
+
+
+
+
+
+
+
+Introduction à la recherche
+
+
+Validation de systèmes P2P
+
+
+
+ATLAS-GDD
+(Gestion de Données Distribuées)
+
+
+
+Année 2008 - 2009
+
+
+
+Table des matières
+
+
+
+
+Presentation du laboratoire
+	
+Présentation du sujet
+	
+	Problématique de la vérification de systèmes distribués
+Validation de systèmes P2P
+
+Ocean Store
+
+Kademlia
+
+Vuze
+PeerUnit
+
+planx
