@@ -1,13 +1,27 @@
 *#summary Le rapport de groupe
 
 Idées en vrac :
+  * Présentation du laboratoire (si ce rapport est diffusé un minimum)
+    * importance du labo (nb chercheurs, liens avec d'autres labo, cnrs..)
+    * principaux axes de recherche.. (tout ça en concis)
   * Présentation de l'équipe
   * Présentation du sujet
   * Problématique de la vérification de systèmes distribués (tests unitaires inutiles)
+    * Limitation des tests unitaires
+    * Problème de "l'explosion combinatoire" (test en local ou sur petit réseau différent de test sur grande échelle), des temps de latences...
   * Kademlia
     * différences avec les autres DHT
-    * Usage (Ocean Store/Vuze)
+    * Usage (Ocean Store/Vuze/eMule?->plus connu)
+      * [semble être utilisé principalement pour la localisation de donnée et non leur transfert.. (J'ai loupé quelque chose ?)]
+    * description du protocole/fonctionnement
+      * ID sur 160 bits,
+      * connexion au réseau,
+      * notion de distance avec un XOR
+      * mécanisme de recherche...
+      * protocole décentralisé
   * PeerUnit
+    * Objectifs
+    * Description du Fonctionnement ?
   * planx
 
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
