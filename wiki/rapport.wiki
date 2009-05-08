@@ -1,10 +1,12 @@
 *#summary Le rapport de groupe
 
+=Partie 1
 Idées en vrac :
   * Présentation du laboratoire (si ce rapport est diffusé un minimum)
     * importance du labo (nb chercheurs, liens avec d'autres labo, cnrs..)
     * principaux axes de recherche.. (tout ça en concis)
   * Présentation de l'équipe
+=Partie 2
   * Présentation du sujet
   * Problématique de la vérification de systèmes distribués (tests unitaires inutiles)
     * Limitation des tests unitaires
