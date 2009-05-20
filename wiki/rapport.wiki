@@ -2,12 +2,34 @@
 
 (autres) Idées en vrac :
 
-==Partie 1==
+= Contexte =
   * Présentation du laboratoire (si ce rapport est diffusé un minimum)
     * importance du labo (nb chercheurs, liens avec d'autres labo, cnrs..)
     * principaux axes de recherche.. (tout ça en concis)
   * Présentation de l'équipe
-==Partie 2==
+
+Le Master 1 ALMA intègre un module d'Initiation à la Recherche. Dans le cadre de ce module, nous avons choisi de rejoindre l'équipe Atlas-GDD du Laboratoire d'Informatique de Nantes Atlantique.
+
+L'équipe Atlas Gestion de Données Distribuées mène des recherches sur les applications réparties et les problèmatiques inhérentes : 
+  * Table de hachage distribuées
+  * Sécurité, confidentialité
+  * à compléter
+
+Tout au long de cette initiation, nous avions deux objectifs :
+  * mener un projet en rapport avec les outils et les technologies qui ont cours dans l'équipe
+  * s'intégrer dans l'équipe afin d'avoir un regard sur le travail de chercheur et l'organisation du laboratoire.
+
+Nous avons consacré à cette initiation un jour par semaine, le jeudi ainsi que quelques heures le reste de la semaine en fonction de nos disponibilités.
+
+== Présentation du projet ==
+
+Nous avons travaillé sur un sujet proposé par Gerson Sunyé qui travaille au sein d'Atlas-GDD et, plus particulièrement sur la qualité logicielle.
+
+L'objectif de notre projet était de tester un système pair-à-pair. Le test devaient être menés à l'aide de l'outil PeerUnit. PeerUnit est un framework permettant de réaliser des tests unitaires répartis. PeerUnit est un projet encore expérimental, il a été principalement développé par Eduardo Almeida pour sa thèse encadrée par Gerson Sunyé et qui prit fin au cour du semestre.
+
+La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de ????????????????????? était donné comme exemple de sujet possible. Après quelques difficultés, nous avons finalement testé une implémentation du protocole Kademlia.
+
+= Partie 2 =
   * Présentation du sujet
   * Problématique de la vérification de systèmes distribués (tests unitaires inutiles)
     * Limitation des tests unitaires
@@ -26,7 +48,7 @@
     * Objectifs
     * Description du Fonctionnement ?
   * planx
-==Partie 3 et plus==
+= Partie 3 et plus =
   * Test effectués...
   * Problèmes rencontrés
 
