@@ -74,7 +74,13 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 === PlanX ===
 
-PlanX est un projet de stockage distribué de documents XML.
+PlanX est un projet de stockage persistant et distribué de documents XML mené à l'université de Compenhague par différents intervenants. Parmi eux, Thomas Ambus a œuvré à l'implémentation d'une couche Kademlia pour ce projet (un autre de ses projets est de créer une interface permettant d'obtenir des ressources à partir d'une requête XPath).
+
+http://plan-x.org/xmlstore/
+
+http://www.thomas.ambus.dk/plan-x/
+
+Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cette nouvelle perspective nous a permis de reprendre nos travaux sur des bases saines.
 
 === Kademlia ===
 
