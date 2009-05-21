@@ -33,9 +33,11 @@ Nous avons travaillé sur un sujet proposé par Gerson Sunyé qui travaille au s
 
 L'objectif de notre projet était de tester un système pair-à-pair. Le test devaient être menés à l'aide de l'outil PeerUnit. PeerUnit est un framework permettant de réaliser des tests unitaires répartis. PeerUnit est un projet encore expérimental, il a été principalement développé par Eduardo Almeida pour sa thèse encadrée par Gerson Sunyé et qui prit fin au cour du semestre.
 
-La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de UC Berkley était donné comme exemple de sujet possible. Après quelques difficultés(documentation insuffisante, le projet semble abandonné), nous avons finalement testé une implémentation du protocole Kademlia.
+La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de UC Berkley était donné comme exemple de sujet possible. Après quelques difficultés, nous avons finalement testé une implémentation du protocole Kademlia.
 
 = Partie 2 =
+
+
   * Présentation du sujet
   * Problématique de la vérification de systèmes distribués (tests unitaires inutiles)
     * Limitation des tests unitaires
@@ -57,6 +59,25 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
     * Objectifs
     * Description du Fonctionnement ?
   * planx
+
+== Choix d'une technologie à tester ==
+
+Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore.
+
+Nous avons ensuite convenu, avec les encadrants, de changer de technologies. Nous nous sommes alors tournée vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair à pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
+
+Dans un premier temps, nous nous pencher sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tourner vers Azureus.
+
+Après un examen rapide des sources de Azureus (quelques 4000 classes majoritairement non-documentées), nous avons trouvé la partie chargée de gérer la DHT basée sur Kademlia. Malheureusement, l'architecture de l'application (pas de découplage entre l'implémentation du protocole et son utilisation, type des valeurs de la DHT fixé statiquement) ne fournissait pas de point d'entrée adéquat pour pouvoir travailler avec PeerUnit dans de bonnes conditions.
+
+Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu plusieurs semaines à essayer d'utiliser les implémentations décrites précédemment.
+
+=== PlanX ===
+
+PlanX est un projet de stockage distribué de documents XML.
+
+=== Kademlia ===
+
 = Partie 3 et plus =
   * Test effectués...
   * Problèmes rencontrés
