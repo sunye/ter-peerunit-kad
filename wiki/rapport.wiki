@@ -10,6 +10,12 @@
 
 Le Master 1 ALMA intègre un module d'Initiation à la Recherche. Dans le cadre de ce module, nous avons choisi de rejoindre l'équipe Atlas-GDD du Laboratoire d'Informatique de Nantes Atlantique.
 
+Dates importantes pour le LINA:
+
+      2004: Création du laboratoire comme résultat du rapprochement de L'IRIN institut    de recherche en informatique de Nantes et du département informatique de l'école des mines de Nantes.
+            Reconnu comme FRE (formation de recherche en evolution) et reconduit en 2006
+      2008: le LINA devient UMR
+
 L'équipe Atlas Gestion de Données Distribuées mène des recherches sur les applications réparties et les problèmatiques inhérentes : 
   * Table de hachage distribuées
   * Sécurité, confidentialité
