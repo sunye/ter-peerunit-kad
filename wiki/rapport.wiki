@@ -42,6 +42,9 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
     * Problème de "l'explosion combinatoire" (test en local ou sur petit réseau différent de test sur grande échelle), des temps de latences...
   * Kademlia
     * différences avec les autres DHT
+      * Utilisation du protocole UDP
+      * Nombre reduit de messages de configuration
+      * Requêtes envoyées de façon parallèles et non synchronisées
     * Usage (Ocean Store/Vuze/eMule?->plus connu)
       * ~~semble être utilisé principalement pour la localisation de donnée et non leur transfert.. (J'ai loupé quelque chose ?) → ouais, c'est le cas de toutes les DHT~~ 
     * description du protocole/fonctionnement
