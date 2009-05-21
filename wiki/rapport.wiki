@@ -33,7 +33,7 @@ Nous avons travaillé sur un sujet proposé par Gerson Sunyé qui travaille au s
 
 L'objectif de notre projet était de tester un système pair-à-pair. Le test devaient être menés à l'aide de l'outil PeerUnit. PeerUnit est un framework permettant de réaliser des tests unitaires répartis. PeerUnit est un projet encore expérimental, il a été principalement développé par Eduardo Almeida pour sa thèse encadrée par Gerson Sunyé et qui prit fin au cour du semestre.
 
-La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de ????????????????????? était donné comme exemple de sujet possible. Après quelques difficultés, nous avons finalement testé une implémentation du protocole Kademlia.
+La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de UC Berkley était donné comme exemple de sujet possible. Après quelques difficultés(documentation insuffisante, le projet semble abandonné), nous avons finalement testé une implémentation du protocole Kademlia.
 
 = Partie 2 =
   * Présentation du sujet
