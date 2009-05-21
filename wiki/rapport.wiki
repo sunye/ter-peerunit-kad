@@ -62,9 +62,9 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
 
 == Choix d'une technologie à tester ==
 
-Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore.
+Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit, après plusieurs semaines d'essais infructueux à renoncer à l'idée de tester OceanStore.
 
-Nous avons ensuite convenu, avec les encadrants, de changer de technologies. Nous nous sommes alors tournée vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair à pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
+Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
 
 Dans un premier temps, nous nous pencher sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tourner vers Azureus.
 
