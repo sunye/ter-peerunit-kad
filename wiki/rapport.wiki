@@ -37,11 +37,40 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
 
 = Partie 2 =
 
+== Choix d'une technologie à tester ==
 
-  * Présentation du sujet
-  * Problématique de la vérification de systèmes distribués (tests unitaires inutiles)
-    * Limitation des tests unitaires
-    * Problème de "l'explosion combinatoire" (test en local ou sur petit réseau différent de test sur grande échelle), des temps de latences...
+Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit, après plusieurs semaines d'essais infructueux à renoncer à l'idée de tester OceanStore.
+
+Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
+
+Dans un premier temps, nous nous pencher sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tourner vers Azureus.
+
+Après un examen rapide des sources de Azureus (quelques 4000 classes majoritairement non-documentées), nous avons trouvé la partie chargée de gérer la DHT basée sur Kademlia. Malheureusement, l'architecture de l'application (pas de découplage entre l'implémentation du protocole et son utilisation, type des valeurs de la DHT fixé statiquement) ne fournissait pas de point d'entrée adéquat pour pouvoir travailler avec PeerUnit dans de bonnes conditions.
+
+Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu plusieurs semaines à essayer d'utiliser les implémentations décrites précédemment.
+
+== OceanStrore ==
+
+Étant donné le temps qu'on y a passé, expliquer ce qui va pas
+
+== Azureus ==
+
+Pareil
+
+== Plan-X ==
+
+Plan-X est un projet de stockage persistant et distribué de documents XML mené à l'université de Compenhague par différents intervenants. Parmi eux, Thomas Ambus a œuvré à l'implémentation d'une couche Kademlia pour ce projet (un autre de ses projets est de créer une interface permettant d'obtenir des ressources à partir d'une requête XPath).
+
+http://plan-x.org/xmlstore/
+
+http://www.thomas.ambus.dk/plan-x/
+
+Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cette nouvelle perspective nous a permis de reprendre nos travaux sur des bases saines.
+
+== Kademlia ==
+
+Décrire brièvement mais formellement le protocole (~ 1 page)
+
   * Kademlia
     * différences avec les autres DHT
       * Utilisation du protocole UDP
@@ -55,34 +84,10 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
       * notion de distance avec un XOR
       * mécanisme de recherche...
       * protocole décentralisé
-  * PeerUnit
-    * Objectifs
-    * Description du Fonctionnement ?
-  * planx
 
-== Choix d'une technologie à tester ==
+== PeerUnit ==
 
-Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit, après plusieurs semaines d'essais infructueux à renoncer à l'idée de tester OceanStore.
 
-Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
-
-Dans un premier temps, nous nous pencher sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tourner vers Azureus.
-
-Après un examen rapide des sources de Azureus (quelques 4000 classes majoritairement non-documentées), nous avons trouvé la partie chargée de gérer la DHT basée sur Kademlia. Malheureusement, l'architecture de l'application (pas de découplage entre l'implémentation du protocole et son utilisation, type des valeurs de la DHT fixé statiquement) ne fournissait pas de point d'entrée adéquat pour pouvoir travailler avec PeerUnit dans de bonnes conditions.
-
-Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu plusieurs semaines à essayer d'utiliser les implémentations décrites précédemment.
-
-=== PlanX ===
-
-PlanX est un projet de stockage persistant et distribué de documents XML mené à l'université de Compenhague par différents intervenants. Parmi eux, Thomas Ambus a œuvré à l'implémentation d'une couche Kademlia pour ce projet (un autre de ses projets est de créer une interface permettant d'obtenir des ressources à partir d'une requête XPath).
-
-http://plan-x.org/xmlstore/
-
-http://www.thomas.ambus.dk/plan-x/
-
-Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cette nouvelle perspective nous a permis de reprendre nos travaux sur des bases saines.
-
-=== Kademlia ===
 
 = Partie 3 et plus =
   * Test effectués...
