@@ -88,4 +88,54 @@ Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cet
   * Test effectués...
   * Problèmes rencontrés
 
+=Test1=
+récupération de valeur avec 2 noeuds
+  * Connection d'un peer au reseau
+  * Le peer met une valeur
+  * un deuxième peer se connecte au précedent
+  * il essaye de récupérer la valeur
+  * il recoit la bonne valeur
+
+=Test2=
+Récuperation de valeur avec 8 noeuds
+  * Connection d'un peer au reseau
+  * Le peer met une valeur
+  * huit autres peers se connectent au précedent
+  * ils essayent de récupérer la valeur
+  * ils recoivent la bonne valeur
+
+=Test3=
+Test pour voir si le mappage est éffectuer au nouveau noeud connecté
+  * Connection d'un peer au reseau
+  * trois autres peers se connectent au premier connecté
+  * le deuxième peer connecté met une valeur
+  * quatre autres peer se connectent au premier
+  * normalement au vue de la configuration du reseau seulement le mappage des valeur est effectué au premier peer rejoint
+  * les quatres premiers peers se déconnectent
+  * le cinquième peer qui doit avoir une recopie du mappage fait un get de la valeur le test sur la valeur reussi
+  * ensuite il se déconnecte
+  * les peers 6,7 et 8 essayent de récuperer la valeur mais ils tombent sur une valeur "null"
+  * le test est alors réussi
+
+=Test4=
+Test pour voir si le mapping est bien effectuer pour K noeud et si k-1 noeud se déconnecte
+  * Connection du premier peer
+  * Connection de 7 autres le deuxième se connecte au premier, le troisième au deuxième ...(topologie bus)
+  * Le noeud 2 publie un valeur
+  * Le noeud 1 et 2 se déconnectent (le mapping doit être copié dans le noeud 3 et 4 car le reseau est ainsi configuré)
+  * le noeud 3 se déconnecte
+  * le noeud 4 essaye de recuperer la valeur.
+  * Il y arrive
+  * Le test est alors réussi
+
+=Test5=
+Ce test consiste à voir si un noeud peut ne poster qu'une seul valeur  
+  * Le premier noeud se connecte
+  * il poste deux valeur
+  * un deuxième noeud se connecte au précedent
+  * le premier noeud essaye de recupérer la première valeur qu'il a posté
+  * il réussit
+  * il essaye ensuite de récuperer la deuxième valeur
+  * il échoue
+  * test réussi
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
