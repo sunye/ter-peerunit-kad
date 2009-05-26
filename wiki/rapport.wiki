@@ -55,7 +55,49 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 == Azureus ==
 
-Pareil
+Dans l'interface com.aelitis.azureus.core.dht.DHT, on trouve
+
+{{{
+/**
+ * @param key
+ * @param max_values
+ * @param timeout
+ * @param listener
+ */
+
+public void
+get(
+	byte[]			key,
+	String			description,
+	byte			flags,
+	int			max_values,
+	long			timeout,
+	boolean			exhaustive,
+	boolean			high_priority,
+	DHTOperationListener	listener );
+
+/* ... */
+
+/**
+ * default is HIGH PRIORITY. if you change to low priority then do so consistently as
+ * operations can get out of order otherwise
+ * @param key
+ * @param description
+ * @param value
+ * @param flags
+ * @param high_priority
+ * @param listener
+ */
+
+public void
+put(
+	byte[]			key,
+	String			description,
+	byte[]			value,
+	byte			flags,
+	boolean			high_priority,
+	DHTOperationListener	listener);
+}}}
 
 == Plan-X ==
 
