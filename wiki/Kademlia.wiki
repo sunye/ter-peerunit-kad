@@ -63,15 +63,71 @@ Cette politique est choisi en se basant sur l'idée que plus un nœud reste conn
 
 Kadmelia se base sur 4 RPC (remote procedure calls)
 
+PING: envoie d'un ping d'un nœud a un autre, le destinataire met à jour le k_buket correspondant à la source,
+
+            en cas de réponse, la source met à jour aussi le k-bucket correspondant
+
+	
 
 
-PING: envoie d'un ping d'un noeud a un autre
 
 STORE(clé,données): le destinataire stocke les données qui peuvent ensuite être retrouvées grâce a la clé
 
-FIND_NODE(clé): le destinataire retourne jusqu'à k triplet correspondant aux nœuds les plus proches de la clé
+	            
+
+FIND_NODE(clé): le destinataire retourne jusqu'à k triplet correspondant aux nœud les plus proche de la clé
+
+	        les valeurs retournées ne doivent jamais contenir les IDNODE de la source ou du destinataire
+
+
 
 FIND_VALUE(clé):le destinataire renvoie les données correspondant a la clé, si il ne trouve pas de données alors il renvoie k triplet(même fonctionnement que FIND_NODE)
 
-//c'est en cours de développement ne pas hesiter a réctifier ou modifier
+
+
+
+
+Trouver un noeud:
+
+Kademlia utilise un algorithme itératif pour localiser les k nœuds les plus proche d'une clé donnée, pour cela il choisi
+ un nombre « alpha » de contact a partir du k-bucket le plus proche de la clé cherchée.
+
+Les alpha contacts ainsi sélectionnés forment une liste appelée "Shortlist" à partir de laquelle s'effectuera la recherche.
+            -envoie de requêtes de type FIND_NODE de façon parallèle et asynchrone vers tout les nœud de la liste
+
+
+	-chaque nœud présent répond par k triplets, si l'un des nœud ne répond pas , il est enlevé temporairement de la Shortlist
+
+
+	-la Shortlist est remplie avec les contacts reçues en réponse
+
+
+	-à partir de la nouvelle liste on selectionne alpha contact a nouveau, a condition qu'il n'aient pas etait selectionnés avant
+
+
+	-envoie de requêtes de type FIND_* vers les nouveaux nœud sélectionnés
+
+
+	-...
+
+
+
+A chaque recherche le nœud le plus proche est marqué "closestNode". si aucun nœud n'est trouvé choisi d'autre nœud de la ShortList et relance la recherche
+.
+
+
+La recherche continue ainsi jusqu'à ce que les valeur retournées ne contiennent plus de nœud plus proche que "ClosestNode" ou jusqu'à ce que le nœud initiant la recherche ait accumulé k nœud actifs.
+
+
+
+
+
+Valeur de Alpha: généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. chaque itération s'effectue après un délai raisonnable(valeur non spécifiée) ainsi les valeurs retourné restent multiple de alpha sans pour autant devenir trop grands
+
+
+
+Trouver une ressource: pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
+
+
+
 .
