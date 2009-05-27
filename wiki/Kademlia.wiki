@@ -87,7 +87,7 @@ FIND_VALUE(clé):le destinataire renvoie les données correspondant a la clé, s
 
 
 
-Trouver un noeud:
+* Trouver un noeud:
 
 Kademlia utilise un algorithme itératif pour localiser les k nœuds les plus proche d'une clé donnée, pour cela il choisi
  un nombre « alpha » de contact a partir du k-bucket le plus proche de la clé cherchée.
@@ -105,7 +105,7 @@ Les alpha contacts ainsi sélectionnés forment une liste appelée Shortlist à 
 	-à partir de la nouvelle liste on selectionne alpha contact a nouveau, a condition qu'il n'aient pas etait selectionnés avant
 
 
-	-envoie de requêtes de type FIND_* vers les nouveaux nœud sélectionnés
+	-envoie de requêtes de type FIND_NODE vers les nouveaux nœud sélectionnés
 
 
 	-...
@@ -122,11 +122,13 @@ La recherche continue ainsi jusqu'à ce que les valeur retournées ne contiennen
 
 
 
-Valeur de Alpha: généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. chaque itération s'effectue après un délai raisonnable(valeur non spécifiée) ainsi les valeurs retourné restent multiple de alpha sans pour autant devenir trop grands
+* Valeur de Alpha: 
+généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. chaque itération s'effectue après un délai raisonnable(valeur non spécifiée) ainsi les valeurs retourné restent multiple de alpha sans pour autant devenir trop grands
 
 
 
-Trouver une ressource: pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
+*Trouver une ressource: 
+pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
 
 
 
