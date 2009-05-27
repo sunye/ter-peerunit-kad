@@ -123,12 +123,14 @@ La recherche continue ainsi jusqu'à ce que les valeur retournées ne contiennen
 
 
 * Valeur de Alpha: 
-généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. chaque itération s'effectue après un délai raisonnable(valeur non spécifiée) ainsi les valeurs retourné restent multiple de alpha sans pour autant devenir trop grands
+
+Généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. chaque itération s'effectue après un délai raisonnable(valeur non spécifiée) ainsi les valeurs retourné restent multiple de alpha sans pour autant devenir trop grands.
 
 
 
 * Trouver une ressource: 
-pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
+
+Pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
 
 
 
