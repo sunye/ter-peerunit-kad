@@ -163,47 +163,48 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
 
 =Test 1=
-       *Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de récupérer une valeur postée par un pair, par le biais un autre pair. Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être partagée par d'autres pairs.
-       *Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
-       *Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
+
+   * Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de récupérer une valeur postée par un pair, par le biais un autre pair. Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être partagée par d'autres pairs.
+   * Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
+   * Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
 
 	*//// Diagramme du test 1.
 
 =Test 2=
 
-	*Pour ce deuxième test, nous voulions recommencer la même démarche que précédement mais en rajoutant un nombre plus grand de pairs.  Ainsi nous avons décidé d'éffectuer le même test  mais en rajoutant six autres pairs. 
-	*Tout comme le premier test, le « Peer1 » se connecte au reseau et poste une chaine de caractères. Ensuite les sept autres peers, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récuperer la chaine stockée par le premier pair.
-	*Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
+   * Pour ce deuxième test, nous voulions recommencer la même démarche que précédement mais en rajoutant un nombre plus grand de pairs.  Ainsi nous avons décidé d'éffectuer le même test  mais en rajoutant six autres pairs. 
+   * Tout comme le premier test, le « Peer1 » se connecte au reseau et poste une chaine de caractères. Ensuite les sept autres peers, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récuperer la chaine stockée par le premier pair.
+   * Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
 
 	*//// Diagramme du test 2
 
 =Test 3=
 
-    *Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement, cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayer de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce reseau après de nouveaux ajouts (Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase).
-    *Donc tout comme les premiers tests, un premier pair va se connecter au réseau. Trois autres pairs vont ensuite se connecter au premier. Le « Peer2» va alors stocker la chaine de caractère « Bonjour » dans la DHT.
+   * Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement, cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayer de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce reseau après de nouveaux ajouts (Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase).
+   * Donc tout comme les premiers tests, un premier pair va se connecter au réseau. Trois autres pairs vont ensuite se connecter au premier. Le « Peer2» va alors stocker la chaine de caractère « Bonjour » dans la DHT.
     *//// Diagramme du test 3 première partie
-    *Une fois que le deuxième pair a ajouté cette chaine de caractères, quatre autres pairs, « Peer5 », « Peer6 », « Peer7 »et « Peer8 », vont alors tenter de se connecter au premier pair. Si tout se passe comme prévu le cinquième pair devrait avoir la chaine de caractères « Bonjour » stockée.
+   * Une fois que le deuxième pair a ajouté cette chaine de caractères, quatre autres pairs, « Peer5 », « Peer6 », « Peer7 »et « Peer8 », vont alors tenter de se connecter au premier pair. Si tout se passe comme prévu le cinquième pair devrait avoir la chaine de caractères « Bonjour » stockée.
 	*//// Diagramme du test 3 deuxième partie  
-    *Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
+   * Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
 	*////Diagramme du test 3 troisième partie.
 
 =Test 4=
 
-	*Ce test a pour but de vérifier que la recopie est bien éffectuée par le reseau lorsque un noeud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
-	*Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractère « Bonjour ».
-	*////Diagrammes du test 4 première partie
-	*Les informations sont alors recopiées dans les pairs deux et trois. Si l'on déconnecte le pair un et deux, il reste plus que le pair trois qui possède les informations. Si tout se déroule correctement la recopie doit être faites sur les pairs quatre et cinq. 
+   * Ce test a pour but de vérifier que la recopie est bien éffectuée par le reseau lorsque un noeud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
+   * Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractère « Bonjour ».
+        *////Diagrammes du test 4 première partie
+   * Les informations sont alors recopiées dans les pairs deux et trois. Si l'on déconnecte le pair un et deux, il reste plus que le pair trois qui possède les informations. Si tout se déroule correctement la recopie doit être faites sur les pairs quatre et cinq. 
 	*///Diagrammes du test 4 deuxième partie
-	*Pour tester cela, on déconnecte le pair trois et on essaye de récuperer la valeur postée par le premier pair avec le quatrième pair. On test l'égalité de la chaine de caractères reçue avec celle désirée. Le test réussit et se termine avec succès.
+   * Pour tester cela, on déconnecte le pair trois et on essaye de récuperer la valeur postée par le premier pair avec le quatrième pair. On test l'égalité de la chaine de caractères reçue avec celle désirée. Le test réussit et se termine avec succès.
 	*////Diagrammes du test 4 troisième partie
 
 =Test 5=
 
-	*Nous voulions essayer de voir si un pair pouvais stocker qu'une seul valeur dans la DHT. Après quelques recherches, nous nous sommes aperçus que cela était possible, toujours grâce à la classe Configuration.
-	*Nous nous somme alors penchés sur notre cinquième test. Il ne comporte que 2 pairs car cela nous était suffisant pour tester la suppression de plusieurs valeurs ajoutées par le même pair.
-	*Ainsi nous connectons deux pairs ensembles, comme pour le test 1. Le premier pair va alors stocker deux valeurs. Il faut, pour que la deuxième valeur soit supprimer, faire patienter les deux pairs pour que la suppression se fasse.
-	*Ensuite le deuxième pair essaye de récupérer la première ainsi que la deuxième chaine de caractères stocké par le premier pair.   
-	*On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
+  * Nous voulions essayer de voir si un pair pouvais stocker qu'une seul valeur dans la DHT. Après quelques recherches, nous nous sommes aperçus que cela était possible, toujours grâce à la classe Configuration.
+  * Nous nous somme alors penchés sur notre cinquième test. Il ne comporte que 2 pairs car cela nous était suffisant pour tester la suppression de plusieurs valeurs ajoutées par le même pair.
+  *  Ainsi nous connectons deux pairs ensembles, comme pour le test 1. Le premier pair va alors stocker deux valeurs. Il faut, pour que la deuxième valeur soit supprimer, faire patienter les deux pairs pour que la suppression se fasse.
+  * Ensuite le deuxième pair essaye de récupérer la première ainsi que la deuxième chaine de caractères stocké par le premier pair.   
+  * On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
 	*////Reste Diagramme à faire.
 
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
