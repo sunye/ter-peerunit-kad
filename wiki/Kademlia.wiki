@@ -92,7 +92,7 @@ Trouver un noeud:
 Kademlia utilise un algorithme itératif pour localiser les k nœuds les plus proche d'une clé donnée, pour cela il choisi
  un nombre « alpha » de contact a partir du k-bucket le plus proche de la clé cherchée.
 
-Les alpha contacts ainsi sélectionnés forment une liste appelée "Shortlist" à partir de laquelle s'effectuera la recherche.
+Les alpha contacts ainsi sélectionnés forment une liste appelée Shortlist à partir de laquelle s'effectuera la recherche.
             -envoie de requêtes de type FIND_NODE de façon parallèle et asynchrone vers tout les nœud de la liste
 
 
@@ -112,7 +112,7 @@ Les alpha contacts ainsi sélectionnés forment une liste appelée "Shortlist" �
 
 
 
-A chaque recherche le nœud le plus proche est marqué "closestNode". si aucun nœud n'est trouvé choisi d'autre nœud de la ShortList et relance la recherche
+A chaque recherche le nœud le plus proche est marqué ClosestNode. si aucun nœud n'est trouvé choisi d'autre nœud de la ShortList et relance la recherche
 .
 
 
