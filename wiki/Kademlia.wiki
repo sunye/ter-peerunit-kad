@@ -127,7 +127,7 @@ généralement alpha=3 ce qui corresponde au nombre de requêtes parallèles. ch
 
 
 
-*Trouver une ressource: 
+* Trouver une ressource: 
 pour cela on utilise le même algorithme que pour localiser un nœud en remplaçant FIND_NODE par FIND_VALUE, mais celui ci s'arrête des que la ressource est trouvée. pour assurer la disponibilité d'une ressource celle ci est stocké simultanément sur plusieurs nœuds..
 
 
