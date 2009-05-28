@@ -55,6 +55,20 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 == Azureus ==
 
+=== Présentation ===
+
+Afin de comprendre la suite, il convient de faire un petit descriptif historique de ce projet. Azureus s'appelle maintenant Vuze : depuis ses origines, l'objectif de ce projet est de créer un client BitTorrent pour la plate-forme Java (tout le code du protocole a été réécrit étant donné que l'implémentation originale est en Python). Il est important de noter que BitTorrent est un protocole à part entière et qu'il est indépendant de Kademlia. La recherche de pair dans BitTorrent est centralisée sur un serveur appelée tracker.
+
+À l'époque d'Azureus, un plug-in Azureus permettait d'étendre le logiciel et d'améliorer les performances en permettant des chercher des pairs autres que ceux fournis par le tracker : cette recherche de pairs se fait sur une DHT basée sur Kademlia.
+
+Dans Vuze, ce plug-in a été intégré pour que cette fonctionnalité deviennent native. Toutefois, le changement de nom du projet et ce passage de plug-in à fonctionnalité native n'a pas été suivi d'une refonte du code mais plutôt d'une rapide retouche.
+
+Ainsi, le code du projet Vuze comprend de très nombreuses référence au nom Azureus, et la fonctionnalité désormais native voit une partie de son code placé dans les packages plug-ins...
+
+=== Recherche d'un point d'entrée ===
+
+Nous avons donc chercher un point d'entrée dans les 4000 classes du projet. Le première chose qui nous a frapper est la manque flagrant de documentation. Toutefois, nous avons essayer de mener une analyse du code afin de voir ce qu'il était possible de faire.
+
 Dans l'interface com.aelitis.azureus.core.dht.DHT, on trouve
 
 {{{
@@ -98,6 +112,8 @@ put(
 	boolean			high_priority,
 	DHTOperationListener	listener);
 }}}
+
+Les paramètres semblent difficiles à renseigner et on ne connait pas leurs formes. Nous avons donc essayé de regarder du côté des classes qui implémentent cette interface. La classe DHTImpl fait quelques milliers de lignes et ne fait que déléguer à uneu autre classe dont il est difficile de comprendre la fonction.
 
 == Plan-X ==
 
