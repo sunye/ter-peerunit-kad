@@ -244,12 +244,12 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 	*////Reste Diagramme à faire.
 =Test6=
 
-*Pour ce test,nous voulions essayer une nouvelle architecture ainsi que de vérifier la gestion des données dans un reseau kadmelia. C'est pourqoi, nous avons choisi la topologie en anneau. Pour mettre en place cette topologie, il faut connecter les pairs comme un topologie en BUS, sauf que le premier pair doit se connecter avec le dernier pair. Nous voulions tester la methode remove() de Kademlia pour essayer de voir si un tiers pair peut supprimer les valeurs postées par d'autres pairs.
+    *Pour ce test,nous voulions essayer une nouvelle architecture ainsi que de vérifier   la gestion des données dans un reseau kadmelia. C'est pourqoi, nous avons choisi la topologie en anneau. Pour mettre en place cette topologie, il faut connecter les pairs comme un topologie en BUS, sauf que le premier pair doit se connecter avec le dernier pair. Nous voulions tester la methode remove() de Kademlia pour essayer de voir si un tiers pair peut supprimer les valeurs postées par d'autres pairs.
 
-*Ainsi une fois que tous les pairs sont connectés, le premier pair à s'être connecté au reseau poste une chaine de caractères. Le pair trois va alors tenté de supprimer cette valeur. Ensuite, il essaye récupérer la chaine pensant que celle-ci est nulle. Mais la valeur qu'il va récuperer est la même que celle posté par le pair numéro un.
+   *Ainsi une fois que tous les pairs sont connectés, le premier pair à s'être connecté au reseau poste une chaine de caractères. Le pair trois va alors tenté de supprimer cette valeur. Ensuite, il essaye récupérer la chaine pensant que celle-ci est nulle. Mais la valeur qu'il va récuperer est la même que celle posté par le pair numéro un.
      //diagramme 1    
 
-*Maintenant, c'est le premier pair qui va essayer de supprimer la valeur qu'il a posté ultérieurement. Le pair numéro trois va récupérer cette valeur, mais, en réponse à sa requête, la valeur retournée est un pointeur nul. Le test est alors réussi.
+   *Maintenant, c'est le premier pair qui va essayer de supprimer la valeur qu'il a posté ultérieurement. Le pair numéro trois va récupérer cette valeur, mais, en réponse à sa requête, la valeur retournée est un pointeur nul. Le test est alors réussi.
      //diagramme 2
 
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
