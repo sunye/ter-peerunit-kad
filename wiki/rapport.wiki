@@ -458,19 +458,134 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
   * Nous voulions essayer de voir si un pair pouvais stocker qu'une seul valeur dans la DHT. Après quelques recherches, nous nous sommes aperçus que cela était possible, toujours grâce à la classe Configuration.
   * Nous nous somme alors penchés sur notre cinquième test. Il ne comporte que 2 pairs car cela nous était suffisant pour tester la suppression de plusieurs valeurs ajoutées par le même pair.
   *  Ainsi nous connectons deux pairs ensembles, comme pour le test 1. Le premier pair va alors stocker deux valeurs. Il faut, pour que la deuxième valeur soit supprimer, faire patienter les deux pairs pour que la suppression se fasse.
+{{{
+     /**
+     * Connection du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * Il va poster ensuite deux chaines de caractere
+     * 
+     */
+	@Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+		this.put(1, InetAddress.getLocalHost());
+    	kad = new Kademlia(Identifier.randomIdentifier(), port1);
+    	kad.put(newAbsId(100), "Premiere chaine de caractere");
+    	kad.put(newAbsId(200), "deuxieme chaine de caractere");
+    }
+    @Test(place=1,timeout=1000000, name = "action1", step = 0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(Identifier.randomIdentifier(), port1);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+}}}
         //diagrramme 1
-  * Ensuite le deuxième pair essaye de récupérer la première ainsi que la deuxième chaine de caractères stocké par le premier pair.   
-  * On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
+  * Ensuite le deuxième pair se déconnecte. Le premier pair essaye de récupérer la première ainsi que la deuxième chaine de caractères qu'il a stocké.On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
+{{{
+  @Test(place=1,timeout=1000000, name = "action3", step = 0)
+    public void testConnect3() throws Exception{
+    	synchronized (this) {
+            wait(1000);
+        }
+    	kad.close();
+    }
+    @Test(place=0,timeout=1000000, name = "action4", step = 0)
+    public void testConnect4() throws Exception{
+    	String result1 = (String) kad.get(newAbsId(100));
+    	String result2 = (String) kad.get(newAbsId(200));
+    	kad.close();
+    	assertEquals(result1,"Premiere chaine de caractere");
+    	assertEquals(result2,null);
+    }
+}}}
 	//diagramme 2.
 
 =Test6=
 
     *Pour ce test,nous voulions essayer une nouvelle architecture ainsi que de vérifier   la gestion des données dans un reseau kadmelia. C'est pourqoi, nous avons choisi la topologie en anneau. Pour mettre en place cette topologie, il faut connecter les pairs comme un topologie en BUS, sauf que le premier pair doit se connecter avec le dernier pair. Nous voulions tester la methode remove() de Kademlia pour essayer de voir si un tiers pair peut supprimer les valeurs postées par d'autres pairs.
+{{{
+     /**
+     * Connection des pair au reseau,
+     * chacun d'entre poste son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=-1,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+        //chaque pair poste son @ IP sur la Map du Coordinateur
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+        kad = new Kademlia(newAbsId(getPeerId()),port1,conf);  
+    }
+    /**
+	 * on connecte entre eux les pairs pour obtenir une topologie en anneau
+	 *
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action1", step = 1)
+    public void testConnect2() throws Exception{
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(getPeerId()-1), port1));
+    }
+    /**
+     * Connection du pair 1 avec le pair 8 pour former une topologie
+     * en anneau.
+     * Il va poster la chaine de caractère "Bonjour" 
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action2", step = 0)
+    public void testConnect3() throws Exception{
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(7), port1));
+    	kad.put(newAbsId(200),"Bonjour");
+    }
+}}}
 
    *Ainsi une fois que tous les pairs sont connectés, le premier pair à s'être connecté au reseau poste une chaine de caractères. Le pair trois va alors tenté de supprimer cette valeur. Ensuite, il essaye récupérer la chaine pensant que celle-ci est nulle. Mais la valeur qu'il va récuperer est la même que celle posté par le pair numéro un.
      //diagramme 1    
-
+{{{
+     /**
+     * On va regarder si un pair peut supprimer une valeur postee 
+     * par un autre pair
+     * 
+     */
+    @Test(place=2,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad.put(newAbsId(220),"Test");
+    	kad.remove(newAbsId(200));
+    	//on attend que de voir si la chaine va etre supprimee
+    	synchronized (this) {
+            wait(1000);
+        }
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals("Bonjour",result);
+    	//le test reussi donc le pair 3 ne peut supprimer un valeur postee
+    	//par un autre pair
+    }
+}}}
    *Maintenant, c'est le premier pair qui va essayer de supprimer la valeur qu'il a posté ultérieurement. Le pair numéro trois va récupérer cette valeur, mais, en réponse à sa requête, la valeur retournée est un pointeur nul. Le test est alors réussi.
+{{{
+    @Test(place=0,timeout=1000000, name = "action2", step = 0)
+    public void testConnect5() throws Exception{
+    	//on supprime la chaine de caractère
+    	kad.remove(newAbsId(200));
+    	synchronized (this) {
+            wait(500);
+        }
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals(null,result);
+    	//le test reussi donc seulement le pair qui poste une information
+    	//peut la supprimer
+    }
+    /**
+     * On va tester si un pair peut recuperer la valeur supprimée
+     * @throws Exception
+     */
+    @Test(place=1,timeout=1000000, name = "action3", step = 0)
+    public void testConnect6() throws Exception{
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals(null,result);
+    	//test reussi
+    }
+}}}
      //diagramme 2
 
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
