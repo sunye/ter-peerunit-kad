@@ -125,6 +125,40 @@ http://www.thomas.ambus.dk/plan-x/
 
 Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cette nouvelle perspective nous a permis de reprendre nos travaux sur des bases saines.
 
+=== Point d'entrée ===
+
+Étant donné la qualité de l'application fournie (documentation complète, tests unitaires, conception élégante), trouver un point d'entrée fut immédiat.
+
+Le classe que nous allons principalement utilisé est Kademlia. Chaque pair doit faire fonctionner une instance de Kademlia.
+
+METTRE LE DIAGRAMME SUR LE COTE
+
+Kademlia implémente l'interface DistributedMap qui fourni les opérations attendues pour une table de hachage (get et put).
+
+Kademlia propose, permis d'autres opérations, la connexion à un autre pair à partir de son adresse réseau.
+
+Les identifiants (pour les pairs et les clés), sont représentés par la classe Identifier.
+
+Quelques exemples :
+
+{{{
+// Création de deux pairs sur la machine locale et connexion
+Kademlia kad1 = new Kademlia(Identifier.randomIdentifier(), 3333);
+Kademlia kad2 = new Kademlia(Identifier.randomIdentifier(), 4444);
+
+kad2.connect(new InetSocketAddress(InetAddress.getLocalHost(), 3333));
+}}}
+
+Suite à ça, on peut faire des opération sur le DHT
+{{{
+Identifier id = Identifier.randomIdentifier();
+
+kad1.put(id, "Bonjour");
+
+String result = (String) kad2.get(id);
+assertEquals("Bonjour", result);
+}}}
+
 == Kademlia ==
 
 Décrire brièvement mais formellement le protocole (~ 1 page)
