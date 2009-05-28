@@ -137,7 +137,9 @@ Kademlia implémente l'interface DistributedMap qui fourni les opérations atten
 
 Kademlia propose, permis d'autres opérations, la connexion à un autre pair à partir de son adresse réseau.
 
-Les identifiants (pour les pairs et les clés), sont représentés par la classe Identifier.
+Les identifiants (pour les pairs et les clés), sont représentés par la classe Identifier. Par défaut, l'identifiant (qui est un BigInteger) est codé sur 128 bits.
+
+Enfin, on peut configurer différents aspects de la DHT en modifiant les différents attributs (publics) d'une instance de la classe Configuration.
 
 Quelques exemples :
 
