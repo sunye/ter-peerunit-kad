@@ -323,6 +323,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     }
 }}}
 	*//// Diagramme du test 3 deuxième partie  
+
    * Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
 {{{
      /**
@@ -349,10 +350,107 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
    * Ce test a pour but de vérifier que la recopie est bien éffectuée par le reseau lorsque un noeud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
    * Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractère « Bonjour ».
+{{{
+     /**
+     * Connection du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+    	//le pair 0 poste son @ IP sur la Map du Coordinateur
+    	kad = new Kademlia(newAbsId(getPeerId()), port1,conf);
+    }
+	
+	/**
+	 * Connection de 7 autres pairs avec le pair precedement connecte (topologie bus)
+	 * @throws Exception
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action0", step = 1)
+    public void testConnect2() throws Exception{
+    	//chaque pair poste son @ IP sur la Map du Coordinateur
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+    	kad = new Kademlia(newAbsId(getPeerId()), port1,conf);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(getPeerId()-1), port1));
+    }
+    
+         /**
+	 * Le pair 1 va poster une chaine de caractere  sur la DHT
+	 *  ayant comme identifiant newAbsId(10)
+	 * 
+	 */
+	@Test(place=0,timeout=1000000, name = "action0", step = 2)
+	public void testConnect3() throws Exception{
+		kad.put(newAbsId(10),"Bonjour");
+	}
+}}}
         *////Diagrammes du test 4 première partie
+
    * Les informations sont alors recopiées dans les pairs deux et trois. Si l'on déconnecte le pair un et deux, il reste plus que le pair trois qui possède les informations. Si tout se déroule correctement la recopie doit être faites sur les pairs quatre et cinq. 
+{{{
+        /**
+	 * on ferme le noeud 1 et 2
+	 */
+	@Test(from=0,to=1,timeout=1000000, name = "action0", step = 3)
+	public void testConnect4() throws Exception{
+		kad.close();
+	}
+	/**
+	 * on attend que la restauration prenne place, 
+	 * le mapping doit etre copie au pair 3,4
+	 * on ferme ensuite le pair 3
+	 * 
+	 */
+	@Test(place=2,timeout=1000000, name = "action0", step = 4)
+	public void testConnect5() throws Exception{
+	    synchronized(this){
+	    	wait(10000);
+            }
+            kad.close();
+	}
+	/**
+	 * On essaye de recuperer la chaine de caractere 
+	 * publie par le noeud 1 avec le noeud 4
+	 * 
+	 */
+	@Test(place=3,timeout=1000000, name = "action0", step = 6)
+	public void testConnect6() throws Exception{
+		String result=(String)kad.get(newAbsId(10));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Ceci est le 4eme test");
+	}
+}}}
+
 	*///Diagrammes du test 4 deuxième partie
+
    * Pour tester cela, on déconnecte le pair trois et on essaye de récuperer la valeur postée par le premier pair avec le quatrième pair. On test l'égalité de la chaine de caractères reçue avec celle désirée. Le test réussit et se termine avec succès.
+{{{
+/**
+	 * on attend que la restauration prenne place, 
+	 * le mapping doit etre copie au pair 3,4
+	 * on ferme ensuite le pair 3
+	 * 
+	 */
+	@Test(place=2,timeout=1000000, name = "action0", step = 4)
+	public void testConnect5() throws Exception{
+            kad.wait(10000);
+            kad.close();
+	}
+	/**
+	 * On essaye de recuperer la chaine de caractere 
+	 * publie par le noeud 1 avec le noeud 4
+	 * 
+	 */
+	@Test(place=3,timeout=1000000, name = "action0", step = 6)
+	public void testConnect6() throws Exception{
+		String result=(String)kad.get(newAbsId(10));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Ceci est le 4eme test");
+	}
+}}}
 	*////Diagrammes du test 4 troisième partie
 
 =Test 5=
