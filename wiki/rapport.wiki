@@ -137,11 +137,7 @@ La problématique du test logiciel est un des aspects centraux de la qualité lo
 
 Pour le test d'applications typiques, on utilise le framework XUnit : il s'agit d'un outil permettant d'écrire et de valider automatiquement des tests « unitaires » : c'est à dire que chaque test porte sur une unité du code, dans les langages objets, l'unité est la classe. Pour chaque classe, on écrit une classe de test. En Java, Junit fait partie des framework de type XUnit.
 
-Toutefois, dans une application répartie, plusieurs problèmes peuvent se poser lorsqu'on fait des tests unitaires. 
-
-PHRASE MANQUANTE
-
-L'application distribuée se retrouve donc avec tous ses éléments censés être répartis en local. Les tests vont donc être menés comme si l'application étant centralisée.
+Toutefois, dans une application répartie, plusieurs problèmes peuvent se poser lorsqu'on fait des tests unitaires. Le test unitaire était un programme comme un autre, il fonctionne en local, sur une machine à la fois. L'application distribuée se retrouve donc avec tous ses éléments censés être répartis en local. Les tests vont donc être menés comme si l'application était centralisée.
 
 Ainsi, on ne peut pas vérifier si
   * Le système passe bien à l'échelle. Si on suppose que la machine qui fait les tests ne peut supporter que 10 pairs : comment vérifier ce qu'il se passe lorsqu'on a 10 000 pairs ou plus. Ne pas pouvoir faire cette vérification est un problème majeur : si on a cherché à répartir l'application, c'est justement parce que l'application ne peut être supportée par une seule machine.
