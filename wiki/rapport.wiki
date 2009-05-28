@@ -113,19 +113,7 @@ Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cet
 
 Décrire brièvement mais formellement le protocole (~ 1 page)
 
-  * Kademlia
-    * différences avec les autres DHT
-      * Utilisation du protocole UDP
-      * Nombre reduit de messages de configuration
-      * Requêtes envoyées de façon parallèles et non synchronisées
-    * Usage (Ocean Store/Vuze/eMule?->plus connu)
-      * ~~semble être utilisé principalement pour la localisation de donnée et non leur transfert.. (J'ai loupé quelque chose ?) → ouais, c'est le cas de toutes les DHT~~ 
-    * description du protocole/fonctionnement
-      * ID sur 160 bits,
-      * connexion au réseau,
-      * notion de distance avec un XOR
-      * mécanisme de recherche...
-      * protocole décentralisé
+voir [Kademlia]
 
 == PeerUnit ==
 
