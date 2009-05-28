@@ -245,10 +245,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     	//les pairs vont recuperer l'adresse du pair 0 sur la Map
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }
-}}}
-   * Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
-{{{
-	/**
+        /**
 	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
 	 *  ayant comme identifiant newAbsId(220)
 	 * 
@@ -257,6 +254,10 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 	public void testConnect3() throws Exception{
 		kad.put(newAbsId(220), "Bonjour! Bonjour!!");
 	}
+}}}
+   * Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
+{{{
+	
 	/**
 	 * Les pairs 2 à 8 vont alors essayer de recuperer 
 	 * la chaine de caractere postee par le premier pair
@@ -276,10 +277,72 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
    * Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement, cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayer de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce reseau après de nouveaux ajouts (Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase).
    * Donc tout comme les premiers tests, un premier pair va se connecter au réseau. Trois autres pairs vont ensuite se connecter au premier. Le « Peer2» va alors stocker la chaine de caractère « Bonjour » dans la DHT.
+{{{
+ /**
+     * Connection du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+    	this.put(1, InetAddress.getLocalHost());
+    	//le pair 0 poste son @ IP sur la Map du Coordinateur
+        kad = new Kademlia(newAbsId(getPeerId()),port1,conf);  
+    }  
+    /**
+	 * Connection des pairs 1 à 3 avec le pair 0.
+	 * Chacun des pairs va récupérer l'adresse IP du premier pair
+	 * pour se connecter. 
+	 * 
+	 */
+    @Test(from=1,to=3,timeout=1000000, name = "action1", step = 0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32), port1,conf);
+    	//les pairs vont recuperer l'adresse du pair 0 sur la Map
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }   
+    /**
+	 * Le pair 1 va alors poster une chaine de caractere  sur la DHT
+	 *  ayant comme identifiant newAbsId(200)
+	 * 
+	 */
+    @Test(place=1,timeout=1000000, name = "action2", step = 0)
+    public void testConnect3() throws Exception{
+    	kad.put(newAbsId(200),"Bonjour");
+    }
+}}}
     *//// Diagramme du test 3 première partie
    * Une fois que le deuxième pair a ajouté cette chaine de caractères, quatre autres pairs, « Peer5 », « Peer6 », « Peer7 »et « Peer8 », vont alors tenter de se connecter au premier pair. Si tout se passe comme prévu le cinquième pair devrait avoir la chaine de caractères « Bonjour » stockée.
+{{{
+@Test(from=4,to=7,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32),port1,conf);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+}}}
 	*//// Diagramme du test 3 deuxième partie  
    * Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
+{{{
+     /**
+     * On ferme les 4 premieres connections ouvertes
+     */
+    @Test(from=0,to=3,timeout=1000000, name = "action5", step = 0)
+    public void testConnect5() throws Exception{
+    	kad.close();
+    }
+    /**
+     * Le pair 4 va tenter de recuperer la chaine de caractere
+     * postee par le pair 1
+     */
+    @Test(place=4,timeout=1000000, name = "action6", step = 0)
+    public void testConnect6() throws Exception{
+    	String result=(String)kad.get(newAbsId(200));
+    	//Test d'egalite des deux chaines
+    	assertEquals(result,"Bonjour");
+    }
+}}}
 	*////Diagramme du test 3 troisième partie.
 
 =Test 4=
