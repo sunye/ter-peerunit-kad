@@ -232,7 +232,43 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
    * Pour ce deuxième test, nous voulions recommencer la même démarche que précédement mais en rajoutant un nombre plus grand de pairs.  Ainsi nous avons décidé d'éffectuer le même test  mais en rajoutant six autres pairs. 
    * Tout comme le premier test, le « Peer1 » se connecte au reseau et poste une chaine de caractères. Ensuite les sept autres peers, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récuperer la chaine stockée par le premier pair.
+{{{
+         /**
+	 * Connection de 7 autres pairs avec le pair 0.
+	 * Chacun des pairs va récupérer l'adresse IP du premier pair
+	 * pour se connecter. 
+	 * 
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action1", step=0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32),port1,conf);
+    	//les pairs vont recuperer l'adresse du pair 0 sur la Map
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+}}}
    * Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
+{{{
+	/**
+	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
+	 *  ayant comme identifiant newAbsId(220)
+	 * 
+	 */
+	@Test(place=0,timeout=1000000, name = "action2", step = 0)
+	public void testConnect3() throws Exception{
+		kad.put(newAbsId(220), "Bonjour! Bonjour!!");
+	}
+	/**
+	 * Les pairs 2 à 8 vont alors essayer de recuperer 
+	 * la chaine de caractere postee par le premier pair
+	 * 
+	 */
+	@Test(from=1,to=7,timeout=1000000, name = "action3", step = 0)
+	public void testConnect4() throws Exception{
+		String result= (String)kad.get(newAbsId(220));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Bonjour");
+    }
+}}}
 
 	*//// Diagramme du test 2
 
