@@ -59,9 +59,9 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 Afin de comprendre la suite, il convient de faire un petit descriptif historique de ce projet. Azureus s'appelle maintenant Vuze : depuis ses origines, l'objectif de ce projet est de créer un client BitTorrent pour la plate-forme Java (tout le code du protocole a été réécrit étant donné que l'implémentation originale est en Python). Il est important de noter que BitTorrent est un protocole à part entière et qu'il est indépendant de Kademlia. La recherche de pair dans BitTorrent est centralisée sur un serveur appelée tracker.
 
-À l'époque d'Azureus, un plug-in Azureus permettait d'étendre le logiciel et d'améliorer les performances en permettant des chercher des pairs autres que ceux fournis par le tracker : cette recherche de pairs se fait sur une DHT basée sur Kademlia.
+À l'époque d'Azureus, un plug-in Azureus permettait d'étendre le logiciel et d'améliorer les performances en permettant des chercher des pairs autres que ceux fournis par le tracker : cette recherche de pairs se faisait sur une DHT basée sur Kademlia.
 
-Dans Vuze, ce plug-in a été intégré pour que cette fonctionnalité deviennent native. Toutefois, le changement de nom du projet et ce passage de plug-in à fonctionnalité native n'a pas été suivi d'une refonte du code mais plutôt d'une rapide retouche.
+Dans Vuze, ce plug-in a été intégré pour que cette fonctionnalité devienne native. Toutefois, le changement de nom du projet et ce passage de plug-in à fonctionnalité native n'a pas été suivi d'une refonte du code mais plutôt d'une rapide retouche.
 
 Ainsi, le code du projet Vuze comprend de très nombreuses référence au nom Azureus, et la fonctionnalité désormais native voit une partie de son code placé dans les packages plug-ins...
 
@@ -113,7 +113,7 @@ put(
 	DHTOperationListener	listener);
 }}}
 
-Les paramètres semblent difficiles à renseigner et on ne connait pas leurs formes. Nous avons donc essayé de regarder du côté des classes qui implémentent cette interface. La classe DHTImpl fait quelques milliers de lignes et ne fait que déléguer à uneu autre classe dont il est difficile de comprendre la fonction.
+Les paramètres semblent difficiles à renseigner et on ne connaît pas leurs formes. Nous avons donc essayé de regarder du côté des classes qui implémentent cette interface. La classe DHTImpl fait quelques milliers de lignes et ne fait que déléguer à une autre classe dont il est difficile de comprendre la fonction.
 
 == Plan-X ==
 
@@ -171,7 +171,7 @@ voir [Kademlia]
 
 La problématique du test logiciel est un des aspects centraux de la qualité logicielle, si bien qu'un module entier (optionnel) de notre formation y est consacré.
 
-Pour le test d'applications typiques, on utilise le framework XUnit : il s'agit d'un outil permettant d'écrire et de valider automatiquement des tests « unitaires » : c'est à dire que chaque test porte sur une unité du code, dans les langages objets, l'unité est la classe. Pour chaque classe, on écrit une classe de test. En Java, Junit fait partie des framework de type XUnit.
+Pour le test d'applications typiques, on utilise le framework XUnit : il s'agit d'un outil permettant d'écrire et de valider automatiquement des tests « unitaires » : c'est à dire que chaque test porte sur une unité du code, dans les langages objets, l'unité est la classe. Pour chaque classe, on écrit une classe de test. En Java, Junit fait partie des frameworks de type XUnit.
 
 Toutefois, dans une application répartie, plusieurs problèmes peuvent se poser lorsqu'on fait des tests unitaires. Le test unitaire était un programme comme un autre, il fonctionne en local, sur une machine à la fois. L'application distribuée se retrouve donc avec tous ses éléments censés être répartis en local. Les tests vont donc être menés comme si l'application était centralisée.
 
