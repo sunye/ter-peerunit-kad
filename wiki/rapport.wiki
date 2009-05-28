@@ -202,6 +202,28 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
    * Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de récupérer une valeur postée par un pair, par le biais un autre pair. Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être partagée par d'autres pairs.
    * Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
+      {{{
+         /**
+	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
+	 *  ayant comme identifiant newAbsId(220)
+	 * 
+	 */
+    @Test(place=0,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad.put(newAbsId(220), "Bonjour");
+    }
+    /**
+	 * Les pairs 2 à 8 vont alors essayer de recuperer 
+	 * la chaine de caractere postee par le premier pair
+	 * 
+	 */
+    @Test(place=1,timeout=1000000, name = "action4", step = 0)
+    public void testConnect5() throws Exception{
+    	String result = (String)kad.get(newAbsId(220));
+    	assertEquals(result,"Bonjour");
+    }	
+      }}}
+
    * Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
 
 	*//// Diagramme du test 1.
