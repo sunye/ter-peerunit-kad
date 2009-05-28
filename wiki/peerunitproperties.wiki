@@ -1,7 +1,7 @@
 # Number of peers that will be in the simulation
 tester.peers=2
 
-tester.logfolder=./log/
+tester.logfolder=./log/ 
 
 
 # Coordination Type
