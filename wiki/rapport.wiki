@@ -57,6 +57,7 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 *Documentation OceanStore*
 *http://oceanstore.cs.berkeley.edu/publications/papers/pdf/asplos00.pdf*
+*http://oceanstore.cs.berkeley.edu/publications/papers/pdf/oceanstore-tr-may99.pdf*
 
 == Azureus ==
 
