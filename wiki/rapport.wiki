@@ -233,7 +233,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 
    * Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
 
-	*//// Diagramme du test 1.
+	http://ter-peerunit-kad.googlecode.com/files/test1.jpeg
 
 =Test 2=
 
@@ -278,7 +278,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     }
 }}}
 
-	*//// Diagramme du test 2
+	http://ter-peerunit-kad.googlecode.com/files/test2.jpeg
 
 =Test 3=
 
@@ -320,7 +320,9 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	kad.put(newAbsId(200),"Bonjour");
     }
 }}}
-    *//// Diagramme du test 3 première partie
+
+    http://ter-peerunit-kad.googlecode.com/files/test3partie1.jpeg
+
    * Une fois que le deuxième pair a ajouté cette chaine de caractères, quatre autres pairs, « Peer5 », « Peer6 », « Peer7 »et « Peer8 », vont alors tenter de se connecter au premier pair. Si tout se passe comme prévu le cinquième pair devrait avoir la chaine de caractères « Bonjour » stockée.
 {{{
 @Test(from=4,to=7,timeout=1000000, name = "action3", step = 0)
@@ -329,7 +331,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }
 }}}
-	*//// Diagramme du test 3 deuxième partie  
+	http://ter-peerunit-kad.googlecode.com/files/test3partie2.jpeg
 
    * Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
 {{{
@@ -351,7 +353,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	assertEquals(result,"Bonjour");
     }
 }}}
-	*////Diagramme du test 3 troisième partie.
+	http://ter-peerunit-kad.googlecode.com/files/test3partie3.jpeg
 
 =Test 4=
 
@@ -394,7 +396,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 		kad.put(newAbsId(10),"Bonjour");
 	}
 }}}
-        *////Diagrammes du test 4 première partie
+        http://ter-peerunit-kad.googlecode.com/files/test4partie1.jpeg
 
    * Les informations sont alors recopiées dans les pairs deux et trois. Si l'on déconnecte le pair un et deux, il reste plus que le pair trois qui possède les informations. Si tout se déroule correctement la recopie doit être faites sur les pairs quatre et cinq. 
 {{{
@@ -431,7 +433,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 	}
 }}}
 
-	*///Diagrammes du test 4 deuxième partie
+	http://ter-peerunit-kad.googlecode.com/files/test4partie21.jpeg
 
    * Pour tester cela, on déconnecte le pair trois et on essaye de récuperer la valeur postée par le premier pair avec le quatrième pair. On test l'égalité de la chaine de caractères reçue avec celle désirée. Le test réussit et se termine avec succès.
 {{{
@@ -458,7 +460,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 		assertEquals(result,"Ceci est le 4eme test");
 	}
 }}}
-	*////Diagrammes du test 4 troisième partie
+	http://ter-peerunit-kad.googlecode.com/files/test4partie2.jpeg
 
 =Test 5=
 
@@ -487,7 +489,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }
 }}}
-        //diagrramme 1
+        http://ter-peerunit-kad.googlecode.com/files/test5partie11.jpeg
   * Ensuite le deuxième pair se déconnecte. Le premier pair essaye de récupérer la première ainsi que la deuxième chaine de caractères qu'il a stocké.On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
 {{{
   @Test(place=1,timeout=1000000, name = "action3", step = 0)
@@ -506,7 +508,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	assertEquals(result2,null);
     }
 }}}
-	//diagramme 2.
+          http://ter-peerunit-kad.googlecode.com/files/test5partie12.jpeg
 
 =Test6=
 
