@@ -141,7 +141,7 @@ Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cet
 
 Le classe que nous allons principalement utilisé est Kademlia. Chaque pair doit faire fonctionner une instance de Kademlia.
 
-METTRE LE DIAGRAMME SUR LE COTE
+http://ter-peerunit-kad.googlecode.com/files/DiagClassKademlia.png
 
 Kademlia implémente l'interface DistributedMap qui fourni les opérations attendues pour une table de hachage (get et put).
 
