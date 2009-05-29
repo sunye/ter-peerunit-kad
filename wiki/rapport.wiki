@@ -39,19 +39,21 @@ La technologie à tester n'était pas déterminée dans le sujet bien que le pro
 
 == Choix d'une technologie à tester ==
 
-Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit, après plusieurs semaines d'essais infructueux à renoncer à l'idée de tester OceanStore.
+Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit~~, après plusieurs semaines d'essais infructueux,~~ à renoncer à l'idée de tester OceanStore.
 
-Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichier).
+Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichiers).
 
-Dans un premier temps, nous nous pencher sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tourner vers Azureus.
+Dans un premier temps, nous nous sommes penchés sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tournés vers Azureus.
 
 Après un examen rapide des sources de Azureus (quelques 4000 classes majoritairement non-documentées), nous avons trouvé la partie chargée de gérer la DHT basée sur Kademlia. Malheureusement, l'architecture de l'application (pas de découplage entre l'implémentation du protocole et son utilisation, type des valeurs de la DHT fixé statiquement) ne fournissait pas de point d'entrée adéquat pour pouvoir travailler avec PeerUnit dans de bonnes conditions.
 
-Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu plusieurs semaines à essayer d'utiliser les implémentations décrites précédemment.
+Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu ~~plusieurs semaines~~ trop de temps à essayer d'utiliser les implémentations décrites précédemment.
 
 == OceanStrore ==
 
 Étant donné le temps qu'on y a passé, expliquer ce qui va pas
+
+*Quelqu'un aurait le schéma qui décrit les couches utilisées par OceanStore ?*
 
 == Azureus ==
 
@@ -63,11 +65,11 @@ Afin de comprendre la suite, il convient de faire un petit descriptif historique
 
 Dans Vuze, ce plug-in a été intégré pour que cette fonctionnalité devienne native. Toutefois, le changement de nom du projet et ce passage de plug-in à fonctionnalité native n'a pas été suivi d'une refonte du code mais plutôt d'une rapide retouche.
 
-Ainsi, le code du projet Vuze comprend de très nombreuses référence au nom Azureus, et la fonctionnalité désormais native voit une partie de son code placé dans les packages plug-ins...
+Ainsi, le code du projet Vuze comprend de très nombreuses références au nom Azureus, et la fonctionnalité désormais native voit une partie de son code placée dans les packages plug-ins...
 
 === Recherche d'un point d'entrée ===
 
-Nous avons donc chercher un point d'entrée dans les 4000 classes du projet. Le première chose qui nous a frapper est la manque flagrant de documentation. Toutefois, nous avons essayer de mener une analyse du code afin de voir ce qu'il était possible de faire.
+Nous avons donc cherché un point d'entrée dans les 4000 classes du projet. Le première chose qui nous a frappé est la manque flagrant de documentation. Toutefois, nous avons essayé de mener une analyse du code afin de voir ce qu'il était possible de faire.
 
 Dans l'interface com.aelitis.azureus.core.dht.DHT, on trouve
 
@@ -135,7 +137,7 @@ METTRE LE DIAGRAMME SUR LE COTE
 
 Kademlia implémente l'interface DistributedMap qui fourni les opérations attendues pour une table de hachage (get et put).
 
-Kademlia propose, permis d'autres opérations, la connexion à un autre pair à partir de son adresse réseau.
+Kademlia propose, parmi d'autres opérations, la connexion à un autre pair à partir de son adresse réseau.
 
 Les identifiants (pour les pairs et les clés), sont représentés par la classe Identifier. Par défaut, l'identifiant (qui est un BigInteger) est codé sur 128 bits.
 
@@ -176,9 +178,9 @@ Pour le test d'applications typiques, on utilise le framework XUnit : il s'agit 
 Toutefois, dans une application répartie, plusieurs problèmes peuvent se poser lorsqu'on fait des tests unitaires. Le test unitaire était un programme comme un autre, il fonctionne en local, sur une machine à la fois. L'application distribuée se retrouve donc avec tous ses éléments censés être répartis en local. Les tests vont donc être menés comme si l'application était centralisée.
 
 Ainsi, on ne peut pas vérifier si
-  * Le système passe bien à l'échelle. Si on suppose que la machine qui fait les tests ne peut supporter que 10 pairs : comment vérifier ce qu'il se passe lorsqu'on a 10 000 pairs ou plus. Ne pas pouvoir faire cette vérification est un problème majeur : si on a cherché à répartir l'application, c'est justement parce que l'application ne peut être supportée par une seule machine.
-  * Le système est robuste aux problèmes de transmission (si tous les pairs sont en local, aucun risque de problème, alors que sur un réseau vaste comme Internet les problèmes sont fréquents)
-  * Le système fonctionne sur une topologie de réseau complexe
+  * Le système passe bien à l'échelle. Si on suppose que la machine qui fait les tests ne peut supporter que 10 pairs : comment vérifier ce qu'il se passe lorsqu'on a 10 000 pairs ou plus. Ne pas pouvoir faire cette vérification est un problème majeur : si on a cherché à répartir l'application, c'est justement parce que l'application ne peut être supportée par une seule machine ;
+  * Le système est robuste aux problèmes de transmission (si tous les pairs sont en local, aucun risque de problème, alors que sur un réseau vaste comme Internet les problèmes sont fréquents) ;
+  * Le système fonctionne sur une topologie de réseau complexe.
 
 On voit donc que les tests unitaires ne permettent pas de tester une application pair à pair en examinant son comportement réel. C'est pourquoi l'outil PeerUnit a été créé.
 
@@ -200,8 +202,9 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
 =Test 1=
 
-   * Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de récupérer une valeur postée par un pair, par le biais un autre pair. Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être partagée par d'autres pairs.
-   * Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
+   * Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de vérifier qu'un pair A peut récupérer une valeur postée par un pair B sur le réseau.
+Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être récupérée et partagée par d'autres pairs.
+   * Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair ~~-bootStrap-~~. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
       {{{
          /**
 	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
@@ -230,11 +233,11 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
 =Test 2=
 
-   * Pour ce deuxième test, nous voulions recommencer la même démarche que précédement mais en rajoutant un nombre plus grand de pairs.  Ainsi nous avons décidé d'éffectuer le même test  mais en rajoutant six autres pairs. 
-   * Tout comme le premier test, le « Peer1 » se connecte au reseau et poste une chaine de caractères. Ensuite les sept autres peers, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récuperer la chaine stockée par le premier pair.
+   * Pour ce deuxième test, nous voulions recommencer la même démarche que précédemment mais en rajoutant un nombre plus grand de pairs. Ainsi nous avons décidé d'effectuer le même test mais en rajoutant six autres pairs. 
+   * Tout comme le premier test, le « Peer1 » se connecte au réseau et poste une chaine de caractères. Ensuite les sept autres pairs, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récupérer la chaine stockée par le premier pair.
 {{{
          /**
-	 * Connection de 7 autres pairs avec le pair 0.
+	 * Connexion de 7 autres pairs avec le pair 0.
 	 * Chacun des pairs va récupérer l'adresse IP du premier pair
 	 * pour se connecter. 
 	 * 
@@ -246,7 +249,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }
         /**
-	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
+	 * Le pair 0 va alors mettre une chaine de caractères  sur la DHT
 	 *  ayant comme identifiant newAbsId(220)
 	 * 
 	 */
@@ -255,12 +258,12 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 		kad.put(newAbsId(220), "Bonjour! Bonjour!!");
 	}
 }}}
-   * Avec les chaine de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
+   * Avec les chaines de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
 {{{
 	
 	/**
-	 * Les pairs 2 à 8 vont alors essayer de recuperer 
-	 * la chaine de caractere postee par le premier pair
+	 * Les pairs 2 à 8 vont alors essayer de récupérer 
+	 * la chaine de caractère postée par le premier pair
 	 * 
 	 */
 	@Test(from=1,to=7,timeout=1000000, name = "action3", step = 0)
@@ -275,11 +278,11 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
 =Test 3=
 
-   * Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement, cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayer de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce reseau après de nouveaux ajouts (Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase).
+   * Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement. Cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayé de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce réseau après de nouveaux ajouts (~~Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase~~ -> c'est pour ça que j'ai eu du mal à comprendre ^^ jusqu'à mettre en doute ce qu'on avait voulu faire).
    * Donc tout comme les premiers tests, un premier pair va se connecter au réseau. Trois autres pairs vont ensuite se connecter au premier. Le « Peer2» va alors stocker la chaine de caractère « Bonjour » dans la DHT.
 {{{
  /**
-     * Connection du premier pair au reseau,
+     * Connexion du premier pair au reseau,
      * il poste ensuite son adresse IP sur la Map
      * du Coordinateur de PeerUnit pour que les autres pairs
      * puissent se connecter.
@@ -292,7 +295,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
         kad = new Kademlia(newAbsId(getPeerId()),port1,conf);  
     }  
     /**
-	 * Connection des pairs 1 à 3 avec le pair 0.
+	 * Connexion des pairs 1 à 3 avec le pair 0.
 	 * Chacun des pairs va récupérer l'adresse IP du premier pair
 	 * pour se connecter. 
 	 * 
@@ -300,11 +303,11 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     @Test(from=1,to=3,timeout=1000000, name = "action1", step = 0)
     public void testConnect2() throws Exception{
     	kad = new Kademlia(newAbsId(getPeerId()*32), port1,conf);
-    	//les pairs vont recuperer l'adresse du pair 0 sur la Map
+    	//les pairs vont récupérer l'adresse du pair 0 sur la Map
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }   
     /**
-	 * Le pair 1 va alors poster une chaine de caractere  sur la DHT
+	 * Le pair 1 va alors poster une chaine de caractères sur la DHT
 	 *  ayant comme identifiant newAbsId(200)
 	 * 
 	 */
@@ -334,7 +337,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     	kad.close();
     }
     /**
-     * Le pair 4 va tenter de recuperer la chaine de caractere
+     * Le pair 4 va tenter de récupérer la chaine de caractères
      * postee par le pair 1
      */
     @Test(place=4,timeout=1000000, name = "action6", step = 0)
@@ -348,11 +351,11 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 
 =Test 4=
 
-   * Ce test a pour but de vérifier que la recopie est bien éffectuée par le reseau lorsque un noeud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
-   * Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractère « Bonjour ».
+   * Ce test a pour but de vérifier que la recopie est bien effectuée par le réseau lorsque un nœud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
+   * Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractères « Bonjour ».
 {{{
      /**
-     * Connection du premier pair au reseau,
+     * Connexion du premier pair au reseau,
      * il poste ensuite son adresse IP sur la Map
      * du Coordinateur de PeerUnit pour que les autres pairs
      * puissent se connecter.
@@ -366,7 +369,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     }
 	
 	/**
-	 * Connection de 7 autres pairs avec le pair precedement connecte (topologie bus)
+	 * Connexion de 7 autres pairs avec le pair précédemment connecté (topologie bus)
 	 * @throws Exception
 	 */
     @Test(from=1,to=7,timeout=1000000, name = "action0", step = 1)
@@ -378,7 +381,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
     }
     
          /**
-	 * Le pair 1 va poster une chaine de caractere  sur la DHT
+	 * Le pair 1 va poster une chaine de caractères  sur la DHT
 	 *  ayant comme identifiant newAbsId(10)
 	 * 
 	 */
@@ -400,7 +403,7 @@ Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différ
 	}
 	/**
 	 * on attend que la restauration prenne place, 
-	 * le mapping doit etre copie au pair 3,4
+	 * le mapping doit être copié au pair 3,4
 	 * on ferme ensuite le pair 3
 	 * 
 	 */
