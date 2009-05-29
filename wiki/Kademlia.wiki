@@ -1,36 +1,35 @@
-DHT(distributed hash table)
+=DHT(distributed hash table)=
 
-Une DHT permet l'identification et l'obtention d'une information dans un système reparti principalement dans les réseau P2P
+Une DHT permet l'identification et l'obtention d'une information dans un système reparti principalement dans les réseau P2P.
 
-Cette technologie permet de bénéficier des avantages des tables indexés tout en réduisant le cout mémoire en effet les données sont repartis entre tout les nœud du réseau cependant il faut introduire de la redondance afin d'éviter la perte de données si l'un des nœud n'est plus accessible.
-
-
-
-Parmi les protocoles utilisant les tables de hachage reparties on peut cité Chord, Tapestry.
-Dans le cadre de notre module D'IR on s'est interssé au protocole Kademlia
+Cette technologie permet de bénéficier des avantages des tables indexées tout en réduisant le coût mémoire. En effet, les données sont reparties entre tous les nœuds du réseau. Cependant, il faut introduire de la redondance afin d'éviter la perte de données si l'un des nœuds n'est plus accessible.
 
 
+Parmi les protocoles utilisant les tables de hachage reparties nous pouvons citer Chord ou Tapestry.
+Dans le cadre de notre module D'IR nous nous sommes intéressés au protocole Kademlia.
 
-Kademlia est un protocole de communication pour les réseaux P2P, ce protocole se base sur une DHT
+=Kademlia=
+
+Kademlia est un protocole de communication pour les réseaux P2P, il est basé sur une DHT.
 
 
+Un réseau Kademlia se compose de plusieurs Nœuds, chaque Noeud communique avec les autres en échangeant et en stockant des informations,
 
-Un réseau Kademlia se compose de plusieurs Noeud, chaque Noeud communique avec les autre en échangeant et en stockant des informations,
+Chaque Nœud possède un identifiant unique NodeID permettant de le distinguer des autres Nœuds du réseau. *Comment est garanti le fait que ce NodeID est unique ?*
 
-Chaque Noeud possède un identifiant unique NodeID permettant de le distinguer des autres Noeuds du réseau, 
-
+==NodeID==
 
 Un nodeID: est un nombre binaire de longueur B=160 bits, chaque nœud choisi son NodeId par une procédure aléatoire au moment de rejoindre le réseau.
 
-Les Clés: les informations stockées sur un reseau Kademlia ont aussi une clé de longeur B=160bits
+==Clé==
 
+Les Clés: les informations stockées sur un réseau Kademlia ont aussi une clé de longueur B=160bits.
 
+==Distance==
 
-Afin de trouver une paire (clé,valeur) Kademlia se base sur la notion de distance entre deux IDnode, cette distance est calculée en appliquant la métrique XOR (ou exclusif)
- qui presente les propriétés suivantes:
+Afin de trouver une paire (clé,valeur) Kademlia se base sur la notion de distance entre deux IDnode, cette distance est calculée en appliquant la métrique XOR (ou exclusif) qui présente les propriétés suivantes:
 
-
-Soit x et y deux identifiant alors:
+Soit x et y deux identifiants alors:
 
 distance(x,y) =  x ⊕ y
 
@@ -43,66 +42,51 @@ distance(x,y) =  x ⊕ y
  d(x, y) + d(y, z) ≥ d(x, z) propriété du triangle
 
 
-
-Soit   ∆ >0, une distance, il existe alors un seul point y tel que d(x,y)=∆ cette propriété assure toutes les recherches d'une clés donnée convergent vers le même chemin...
-
+Soit ∆ > 0, une distance, il existe alors un seul point y tel que d(x,y)=∆. Cette propriété assure que toutes les recherches d'une clé donnée convergent vers le même chemin...
 
 
-Chaque nœud stocke différente information sur les autres nœuds afin de pouvoir acheminer les requêtes, ces information sont stocké dans des listes appelée K-buckets, les information y sont stockée sous forme de triplet (adresse IP,port UDP,NodeID) 
-Chaque K-bucket peut contenir jusqu'à 160 triplets qui sont triées les nœuds vue le plus récemment sont en queue de liste les nœuds vue le moins récemment sont au sommet. 
+==K-Buckets==
+
+Chaque nœud stocke différentes informations sur les autres nœuds afin de pouvoir acheminer les requêtes, ces informations sont stockées dans des listes appelées K-buckets. Les information y sont stockéees sous forme de triplet (adresse IP,port UDP,NodeID).
+Chaque K-bucket peut contenir jusqu'à 160 triplets qui sont triées ainsi : les nœuds vus le plus récemment sont en queue de liste, les nœuds vue le moins récemment sont au sommet. 
 Le paramètre k des k-buckets correspond au nombre d'éléments contenus dans chacune de ces listes généralement K=20.
 
-Pour 0<= i< 160 les K-bucket stockent ces information pour les nœuds  dont la distance est entre 2^i et 2^(i+1) du noeud concerné
+Pour 0 <= i < 160, les K-bucket stockent ces informations pour les nœuds dont la distance est entre 2^i et 2^(i+1) du nœud concerné.
 
 
-La mise a jour des K-bucket: à la réception d'un message (requête ou réponse) le nœud met a jour le k-bucket correspondant a l'envoyeur, ci celui ci y est déjà alors il est déplace vers la queue de la liste, sinon il est inséré à la queue, 
-Cependant si le k-bucket est déjà plein alors on vérifie si le nœud se trouvant en tète de liste c-a-d celui qui a été vu le moins récemment est toujours disponible, si il l'est, il est déplacé vers la queue de la liste et l'envoyeur du message n'est pas prit en compte sinon on insère le nœud envoyeur a la place.
-Cette politique est choisi en se basant sur l'idée que plus un nœud reste connecté plus il a de chance de rester connecté encore plus longtemps
+===La mise à jour des K-bucket===
 
+A la réception d'un message (requête ou réponse) le nœud met à jour le k-bucket correspondant à l'envoyeur. Si celui-ci y est déjà présent, alors il est déplace vers la queue de la liste, sinon il est inséré à la queue.
+Cependant, si le k-bucket est déjà plein alors on vérifie si le nœud se trouvant en tète de liste - c-a-d celui qui a été vu le moins récemment - est toujours disponible. Si il l'est, il est déplacé vers la queue de la liste et l'envoyeur du message n'est pas pris en compte sinon on insère le nœud envoyeur a la place.
+Cette politique est choisie en se basant sur l'idée que plus un nœud reste connecté plus il a de chance de rester connecté encore plus longtemps.
 
+==Remote Procedure Calls==
 
 Kadmelia se base sur 4 RPC (remote procedure calls)
 
-PING: envoie d'un ping d'un nœud a un autre, le destinataire met à jour le k_buket correspondant à la source,
+===PING===
+Envoie d'un ping d'un nœud à un autre, le destinataire met à jour le k-bucket correspondant à la source. En cas de réponse, la source met à jour aussi le k-bucket correspondant.
 
-            en cas de réponse, la source met à jour aussi le k-bucket correspondant
+===STORE(clé,données)===
+Le destinataire stocke les données qui peuvent ensuite être retrouvées grâce a la clé
 
-	
+===FIND_NODE(clé)===
+Le destinataire retourne jusqu'à k triplet correspondant aux nœuds les plus proche de la clé. Les valeurs retournées ne doivent jamais contenir les NodeID de la source ou du destinataire.
 
-
-
-STORE(clé,données): le destinataire stocke les données qui peuvent ensuite être retrouvées grâce a la clé
-
-	            
-
-FIND_NODE(clé): le destinataire retourne jusqu'à k triplet correspondant aux nœud les plus proche de la clé
-
-	        les valeurs retournées ne doivent jamais contenir les IDNODE de la source ou du destinataire
+===FIND_VALUE(clé)===
+Le destinataire renvoie les données correspondant à la clé. Si il ne trouve pas de données alors il renvoie k triplet(même fonctionnement que FIND_NODE).
 
 
 
-FIND_VALUE(clé):le destinataire renvoie les données correspondant a la clé, si il ne trouve pas de données alors il renvoie k triplet(même fonctionnement que FIND_NODE)
+==Trouver un noeud==
 
-
-
-
-
-* Trouver un noeud:
-
-Kademlia utilise un algorithme itératif pour localiser les k nœuds les plus proche d'une clé donnée, pour cela il choisi
- un nombre « alpha » de contact a partir du k-bucket le plus proche de la clé cherchée.
-
+Kademlia utilise un algorithme itératif pour localiser les k nœuds les plus proche d'une clé donnée, pour cela il choisi un nombre « alpha » de contact à partir du k-bucket le plus proche de la clé cherchée.
 Les alpha contacts ainsi sélectionnés forment une liste appelée Shortlist à partir de laquelle s'effectuera la recherche.
-            -envoie de requêtes de type FIND_NODE de façon parallèle et asynchrone vers tout les nœud de la liste
 
-
-	-chaque nœud présent répond par k triplets, si l'un des nœud ne répond pas , il est enlevé temporairement de la Shortlist
-
-
-	-la Shortlist est remplie avec les contacts reçues en réponse
-
-
-	-à partir de la nouvelle liste on selectionne alpha contact a nouveau, a condition qu'il n'aient pas etait selectionnés avant
+    -envoie de requêtes de type FIND_NODE de façon parallèle et asynchrone vers tout les nœud de la liste.
+    -chaque nœud présent répond par k triplets, si l'un des nœud ne répond pas , il est enlevé temporairement de la Shortlist.
+    -la Shortlist est remplie avec les contacts reçues en réponse.
+    -à partir de la nouvelle liste on sélectionne alpha contact a nouveau, a condition qu'il n'aient pas etait selectionnés avant
 
 
 	-envoie de requêtes de type FIND_NODE vers les nouveaux nœud sélectionnés
