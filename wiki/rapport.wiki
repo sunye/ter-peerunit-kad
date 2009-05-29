@@ -489,7 +489,9 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
     }
 }}}
-        http://ter-peerunit-kad.googlecode.com/files/test5partie11.jpeg
+
+        http://ter-peerunit-kad.googlecode.com/files/Test5partie11.jpeg
+
   * Ensuite le deuxième pair se déconnecte. Le premier pair essaye de récupérer la première ainsi que la deuxième chaine de caractères qu'il a stocké.On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
 {{{
   @Test(place=1,timeout=1000000, name = "action3", step = 0)
@@ -508,7 +510,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	assertEquals(result2,null);
     }
 }}}
-          http://ter-peerunit-kad.googlecode.com/files/test5partie12.jpeg
+          http://ter-peerunit-kad.googlecode.com/files/Test5partie12.jpeg
 
 =Test6=
 
