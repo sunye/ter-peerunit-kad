@@ -233,7 +233,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 
    * Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
 
-	http://ter-peerunit-kad.googlecode.com/files/test1.jpeg
+	http://ter-peerunit-kad.googlecode.com/files/Test1.jpeg
 
 =Test 2=
 
@@ -278,7 +278,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     }
 }}}
 
-	http://ter-peerunit-kad.googlecode.com/files/test2.jpeg
+	http://ter-peerunit-kad.googlecode.com/files/Test2.jpeg
 
 =Test 3=
 
