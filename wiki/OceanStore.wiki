@@ -105,6 +105,7 @@ Comme mentionné dans le paragraphe précédent  chaque objet est identifié par
 	* Algorithme global
 
 	//celui la se base sur « Plaxton et al's randomized hierarchical distributed data structure »
+
         * Mise a jour
 
 	//et celui ci se base sur le Bayou system  (va savoir se que c ce truc)
