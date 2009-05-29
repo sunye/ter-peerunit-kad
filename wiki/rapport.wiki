@@ -55,6 +55,9 @@ Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademl
 
 *Quelqu'un aurait le schéma qui décrit les couches utilisées par OceanStore ?*
 
+*Documentation OceanStore*
+*http://oceanstore.cs.berkeley.edu/publications/papers/pdf/asplos00.pdf*
+
 == Azureus ==
 
 === Présentation ===
