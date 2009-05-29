@@ -547,7 +547,7 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
 }}}
 
    *Ainsi une fois que tous les pairs sont connectés, le premier pair à s'être connecté au reseau poste une chaine de caractères. Le pair trois va alors tenté de supprimer cette valeur. Ensuite, il essaye récupérer la chaine pensant que celle-ci est nulle. Mais la valeur qu'il va récuperer est la même que celle posté par le pair numéro un.
-     //diagramme 1    
+      http://ter-peerunit-kad.googlecode.com/files/test6partie1.jpeg
 {{{
      /**
      * On va regarder si un pair peut supprimer une valeur postee 
@@ -593,6 +593,6 @@ Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajout
     	//test reussi
     }
 }}}
-     //diagramme 2
+     http://ter-peerunit-kad.googlecode.com/files/test6partie2.jpeg
 
 *Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑) *
