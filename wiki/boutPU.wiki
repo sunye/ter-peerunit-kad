@@ -50,7 +50,7 @@ public setUp() {
 @Test(place=0, timeout=100000, name = "action1", step = 1)
 public testPut() {
     kad.put(id, "Bonjour");
-    assertTrue(kad1.contains(id));
+    assertTrue(kad.contains(id));
 }
 
 @Test(place=1, timeout=100000, name = "action1", step = 2)
@@ -69,5 +69,3 @@ Quand un pair démarre, il se connecte au coordinateur. Le coordinateur affecte 
 C'est ce même Id qui est utilisé dans les annotations dans place et from/to. Place permet d'indiquer qu'une méthode sera exécuté par un seul pair dont l'Id est préciser. From/to permet de faire exécuter la même méthode à chaque pair dont l'Id est compris entre les Id précisés dans l'annotation.
 
 Avec name et step, on peut affecter l'ordre des méthodes mais nous n'avons pas fait usage de cette fonctionnalité par la suite.
-
-Les PeerId d
