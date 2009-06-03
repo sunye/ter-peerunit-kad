@@ -1,0 +1,1 @@
+  Pour effectuer le bootstrap, on utilise la Map présente dans le coordinateur. Ainsi, tous les pairs, qui se connectent au réseau, postent leurs adresses internet sur la Map du coordinateur, avec comme clé leurs numéros d'identifiant. Comme cela, si un pair veut se connecter à un autre pair, il peut récupérer l'adresse internet en sachant le numéro identifiant du pair.
