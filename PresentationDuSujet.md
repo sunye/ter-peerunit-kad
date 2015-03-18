@@ -1,0 +1,19 @@
+# Validation de systémes P2P #
+Contact : Gerson Sunyé - gerson.sunye@univ-nantes.fr
+
+## Description ##
+Les systémes pair à pair (P2P) sont en train de devenir une technologie
+clé pour le développement de logiciels, mais n'a toujours pas de solutions intégrées
+afin de valider le logiciel, en termes de fiabilité et de sécurité.
+Le test des systémes P2P est difficile en raison du nombre élevé de pairs et de leur
+instabilité. L'équipe Atlas-gdd du Lina a développé une plate-forme de test de
+systémes distribués à grande échelle
+
+Cette plate-forme propose deux propriétés originales :
+(i) le contrôle individuel de la volatilité des pairs et
+(ii) une architecture de tests répartie pour faire face à un grand nombre de pairs
+(passage à l'échelle).
+Les objectifs de ce stage sont de :
+- étudier le projet OceanStore de l'Université de Berkeley. OceanStore permet le
+stockage global de données qui a été conÁu pour fonctionner jusqu'à 1 milliard de pairs.
+- tester OcenStore en le deployant sur les machines du Grid5000 (www.grid5000.org/).

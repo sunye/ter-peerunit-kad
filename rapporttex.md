@@ -1,0 +1,99 @@
+%\documentclass[french,a4paper,11pt,twoside,openright]{book}
+\documentclass[a4paper,11pt]{article}
+
+%\usepackage[T1](T1.md){fontenc}          % sortie : polices 8 bits
+\usepackage[latin1](latin1.md){inputenc}      % entree : jeu de caractere 8 bits Unix
+%\usepackage[frenchb](frenchb.md){babel}       % regle mise en page francaise de Babel (standard)
+\usepackage[french](french.md){babel}         % regle mise en page francaise (de Bernard Gaulle sous Babel)
+
+
+%\usepackage{t1enc}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{ulem}
+\usepackage{maquetteA4} % maquette pages rapport style
+\setlength{\headheight}{13.60pt}
+\usepackage{amsfonts}
+\usepackage{url}
+\let\urlurl\url
+%\usepackage[breaklinks=true]{hyperref}
+%\usepackage{hyperref}
+%\hypersetup{hypertexnames=false}
+%\usepackage{makeidx}
+%\usepackage{subfigure}
+
+%\usepackage[nottoc, notlof, notlot]{tocbibind}
+
+\sloppy % Baisse le taux des césures
+%\normalem
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeindex
+\begin{document}
+
+% Style du document :
+%\pagestyle{fancy}
+\pagestyle{myheadings}
+
+%\include[dvips](dvips.md){graphics}
+
+{
+\pagestyle{empty} % Supprime numéro de page
+\include{rapport\_couverture}
+\cleardoublepage
+}
+
+{
+\pagenumbering{roman}
+\tableofcontents % La table des matieres
+%\listoffigures   % La table des figures
+\cleardoublepage
+\pagenumbering{arabic}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Plan Rapport :
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\input{intro}
+\input{1-algorithme}
+\input{2-analyseTheorique}
+\input{3-analysePratique}
+\input{conclusion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Les annexes
+
+%\appendix
+%\cleardoublepage        %force position sur la BONNE page, pour numerotation
+%\addcontentsline{toc}{part}{Annexes}
+
+%mettre des input ensuite (et pas des include,
+% sinon decalage dans la table des matieres)
+
+%\input{Annexe/}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Les références bibliographiques
+
+%\include{biblio}
+%\bibliographystyle{plain} % style numérotation
+%\bibliography{biblio}    % pour utiliser bibtex
+%\cleardoublepage        %force position sur la BONNE page, pour numerotation
+%\addcontentsline{toc}{chapter}{Bibliographie}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% L'index
+%\printindex
+%\cleardoublepage        %force position sur la BONNE page, pour numerotation
+%\addcontentsline{toc}{chapter}{Index des termes}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

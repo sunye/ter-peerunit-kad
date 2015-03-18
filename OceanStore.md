@@ -1,0 +1,118 @@
+OceanStore
+
+
+**Généralités.**
+
+fournir un service pour 10¹0 utilisateurs
+
+le services OCEANSTORE est destiné a être payant
+
+Stockage persistant des données fiable peut résister au différents problèmes exp catastrophe naturelles
+La sécurité des données jour un rôle très important dans ce systeme
+En partant du principe que la gestion des données stocké et plus cher que le support du stockage.
+
+//cette partie n'est pas finie
+
+**Objectifs:**
+
+
+
+  * Manque de fiabilité des infrastructures:
+On part du principe que l'infrastructure n'est pas fiable. les serveur peuvent être sujet a des "crash", révéler des information a des personnes malveillantes...
+
+Seul les client(utilisateurs) sont considérer comme fiable, cependant le rôle des serveur ne doit pas être passif(stockage des données seulement) mais ils doivent participer au protocole pour cela ils sont considérer comme sur uniquement pour le transport des données mais pas pour le contenu de ces données
+
+
+
+  * Données Nomades
+Dans un système aussi large que OceanStore l'endroit ou est stocké chaque donné est capital. le but de ce système est que les données se déplacent constamment bien que cela pose un problème de cohérence il permet aussi une grande flexibilité. le système essaye de découvrir les relation entre les données "introspection", les méta-donnes résultantes serviront dans la gestion des endroits ou seront stockées les données. Ce mouvement continue des données est comparable au mouvement de l'eau dans un Ocean d'où le nom OceanStore
+
+
+**Exemples d'applications**
+
+OCEANSTORE est un système destinée a être utilisé pour différentes application
+:
+
+  * E-mail
+Le système peut aisément remplacer une boite mail classique, pour cela un utilisateur réserve un objet oceanstore et l'utilise comme boite de réception. l'utilisation d'une clé publique de cryptage permet au autres utilisateurs d'envoyer des email vers cette boite de réception, mais seul le propriétaire peut la consulter. cependant l'utilisation de proxy effectuant la conversion entre les requêtes de type SMTP,POP et IMAP en des requete OceanStore est necaissaire.
+
+l'objet ainsi créer n'est pas relié à un serveur spécifique, ce qui le rend plus robuste contre les défaillance et les attaque exp DOS
+> ou DDOS
+
+  * Multimédia
+OceanStore peut aussi servir comme support de diffusion d'application multimédia, ce genre d'application nécessitent un système de mise a jour des donnes efficace, nous verrons dans la suite de ce document les mécanisme utilisé dans OceanStore permettant ceci...
+
+
+
+d'autre domaine d'application peuvent être utilisée dans OceanStore comme les bases de données...
+
+
+
+
+
+
+
+**Le systeme**
+
+
+Les objet persistant représentent l'unité fondamentale sur lequelle se base OCEANSTORE, l'utilisateur interagit avec ces objets pour stocker des information ou pour communiquer avec avec d'autre utilisateurs. le nommage la consistance et la localisation des données se base sur ces objet.
+
+OceanStore tire profit des évolution des processeur, de la capacité de stockage et des débit élevés des réseaux actuels pour garantir la stabilité la durabilité et la sécurité des objets sans négliger la vitesse d'aces
+
+Un Objet peut être "Actif" ou "Archivé" dans le premier cas l'objet est dans ça dernière version et  est "prêt" a être modifier n'importe quand! le second cas représente les version d'objet en lecture seule
+
+
+
+  * Securité
+
+OceanStore supporte les techniques de contrôle d'aces classique: permission de lecture écriture, propriétaire,Groupes... cependant les mécanismes sous-jacent a ces techniques sont différents de ceux utilisée dans les autre systèmes(OS) bien qu'ils occupent une part non négligeable de OceanStore nous n'allons pas développer plus ce sujet.
+
+
+  * Réplication des données et mise ajour
+
+Les objet lu ou écrits doivent être dans l'état "actif", plusieurs répliques(morceaux) sont distribuées  sur le réseau, chaque réplique contient une copie complète des données des méta-données ainsi qu'un journal(log) des modification effectué.
+
+Pour rendre un objet actif OceanStore fusionne les fragment archivé de la dernière version de cet objet à partir de différentes localisation une fois actif  la lecture ou l'écriture s'effectue en dirigeant l'utilisateur vers la réplique la plus proche.
+
+Un objet qui reste longtemps inactif est détruit (en supprimant toutes les répliques)
+
+
+
+  * Localisation des données
+
+Les objet dans OCEANSTORE sont nomades et se déplacent à travers l'infrastructure pour se faire un mécanisme de localisation a deux partie est utilisé ainsi une rapide recherche
+probabilistique(algorithme local) est effectuée combinée a une recherche hiérarchique(algorithme global) plus lente parmi les différente copies stockées.
+
+A chaque nom,réplique,fragment d'objet ou liste de contrôle d'accès est assigné un identifiant global et unique GUID dérivé a partir d'une fonction de hachage sure! cet identifiant permet de retourner un pointeur sur la localisation de l'objet recherché.
+
+
+
+
+
+**Architecture**
+
+Comme mentionné dans le paragraphe précédent  chaque objet est identifié par un GUID.Pour  les objet en lecture-seule il est obtenu en appliquant une fonction hachage sur les données, chaque version de chaque objet est unique, pour les autre objet(réplique) le choix du GUID est plus délicat, un mécanisme est nécessaire pour mapper les GUID avec les nom lisible par un humain ce  mécanisme consiste en une clé publique utilisant un cryptage de type SHA-1
+
+  * Controle d'acces
+
+> le propriétaire d'un objet peut choisir une liste de contrôle d'accès ACL(access controle list) pour cet objet dans laquels des privilèges sont donnés a des clé publique, l'identité explicite du bénéficiaire du privilège n'est pas donnée
+
+
+
+  * Algorithme local
+
+> // ce truc est basé sur les Bloom-filters(la flemme de chercher la)
+  * Algorithme global
+
+> //celui la se base sur « Plaxton et al's randomized hierarchical distributed data structure »
+
+  * Mise a jour
+
+> //et celui ci se base sur le Bayou system  (va savoir se que c ce truc)
+  * Introspection
+
+
+// je sais pas si ça vaut le coup ou pas de developper tout ces truc???
+
+
+

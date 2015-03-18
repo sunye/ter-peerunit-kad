@@ -1,0 +1,608 @@
+**#summary Le rapport de groupe**
+
+(autres) Idées en vrac :
+
+# Contexte #
+  * Présentation du laboratoire (si ce rapport est diffusé un minimum)
+    * importance du labo (nb chercheurs, liens avec d'autres labo, cnrs..)
+    * principaux axes de recherche.. (tout ça en concis)
+  * Présentation de l'équipe
+
+Le Master 1 ALMA intègre un module d'Initiation à la Recherche. Dans le cadre de ce module, nous avons choisi de rejoindre l'équipe Atlas-GDD du Laboratoire d'Informatique de Nantes Atlantique.
+
+Dates importantes pour le LINA:
+
+> 2004: Création du laboratoire comme résultat du rapprochement de L'IRIN institut    de recherche en informatique de Nantes et du département informatique de l'école des mines de Nantes.
+> > Reconnu comme FRE (formation de recherche en evolution) et reconduit en 2006
+
+> 2008: le LINA devient UMR
+
+L'équipe Atlas Gestion de Données Distribuées mène des recherches sur les applications réparties et les problèmatiques inhérentes :
+  * Table de hachage distribuées
+  * Sécurité, confidentialité
+  * à compléter
+
+Tout au long de cette initiation, nous avions deux objectifs :
+  * mener un projet en rapport avec les outils et les technologies qui ont cours dans l'équipe
+  * s'intégrer dans l'équipe afin d'avoir un regard sur le travail de chercheur et l'organisation du laboratoire.
+
+Nous avons consacré à cette initiation un jour par semaine, le jeudi ainsi que quelques heures le reste de la semaine en fonction de nos disponibilités.
+
+## Présentation du projet ##
+
+Nous avons travaillé sur un sujet proposé par Gerson Sunyé qui travaille au sein d'Atlas-GDD et, plus particulièrement sur la qualité logicielle.
+
+L'objectif de notre projet était de tester un système pair-à-pair. Le test devaient être menés à l'aide de l'outil PeerUnit. PeerUnit est un framework permettant de réaliser des tests unitaires répartis. PeerUnit est un projet encore expérimental, il a été principalement développé par Eduardo Almeida pour sa thèse encadrée par Gerson Sunyé et qui prit fin au cour du semestre.
+
+La technologie à tester n'était pas déterminée dans le sujet bien que le projet OceanStore de l'université de UC Berkley était donné comme exemple de sujet possible. Après quelques difficultés, nous avons finalement testé une implémentation du protocole Kademlia.
+
+# Partie 2 #
+
+## Choix d'une technologie à tester ##
+
+Lorsque nous nous sommes lancés sur le projet, notre objectif premier était de tester OceanStore. Nous avons passé plusieurs semaines à étudier son fonctionnement et son utilisation. La complexité de l'application (4 couches différentes et trop configurables, si bien que les auteurs avaient recours à des dizaines de scripts Perl pour lancer le tout...) ainsi que le manque de documentation utilisateur (une Javadoc était toutefois disponible) nous ont conduit~~, après plusieurs semaines d'essais infructueux,~~ à renoncer à l'idée de tester OceanStore.
+
+Nous avons dès lors convenu, avec les encadrants, de changer de technologie. Nous nous sommes alors tournés vers le protocole Kademlia : un protocole récent très utilisé dans les applications pair-à-pair à grande échelle (notamment eMule, et Azureus : deux des principales applications pair à pair utilisées par le grand public pour le partage de fichiers).
+
+Dans un premier temps, nous nous sommes penchés sur Arureus : eMule est écrit en C++ tandis que Azureus est en Java. PeerUnit étant en Java, il ne permet pas de tester une application C++ sans ajout fonctionnel profond. Nous nous sommes donc tournés vers Azureus.
+
+Après un examen rapide des sources de Azureus (quelques 4000 classes majoritairement non-documentées), nous avons trouvé la partie chargée de gérer la DHT basée sur Kademlia. Malheureusement, l'architecture de l'application (pas de découplage entre l'implémentation du protocole et son utilisation, type des valeurs de la DHT fixé statiquement) ne fournissait pas de point d'entrée adéquat pour pouvoir travailler avec PeerUnit dans de bonnes conditions.
+
+Nous nous sommes donc lancés à la recherche d'autres implémentation de Kademlia : c'est ainsi que nous avons découvert un projet de l'université de Copenhague baptisée PlanX. Notre choix c'est arrêté sur ce dernier : malheureusement, nous avions déjà perdu ~~plusieurs semaines~~ trop de temps à essayer d'utiliser les implémentations décrites précédemment.
+
+## OceanStrore ##
+
+Étant donné le temps qu'on y a passé, expliquer ce qui va pas
+
+**Quelqu'un aurait le schéma qui décrit les couches utilisées par OceanStore ?**
+
+**Documentation OceanStore**
+
+**http://oceanstore.cs.berkeley.edu/publications/papers/pdf/asplos00.pdf***
+
+**http://oceanstore.cs.berkeley.edu/publications/papers/pdf/oceanstore-tr-may99.pdf***
+
+**http://www.google.fr/url?sa=t&source=web&ct=res&cd=8&url=http%3A%2F%2Fnclab.kaist.ac.kr%2Flecture%2Fcs744_2003_Spring%2Fpresentations%2FPond-OceanStore.ppt&ei=WMofSvPsOJC6sgbq94nHBg&usg=AFQjCNHt5-BNLo7nCwsaS3PxxzK3PooR_w&sig2=EFzp08pTPMrY0ksAQW3eBQ***
+
+## Azureus ##
+
+### Présentation ###
+
+Afin de comprendre la suite, il convient de faire un petit descriptif historique de ce projet. Azureus s'appelle maintenant Vuze : depuis ses origines, l'objectif de ce projet est de créer un client BitTorrent pour la plate-forme Java (tout le code du protocole a été réécrit étant donné que l'implémentation originale est en Python). Il est important de noter que BitTorrent est un protocole à part entière et qu'il est indépendant de Kademlia. La recherche de pair dans BitTorrent est centralisée sur un serveur appelée tracker.
+
+À l'époque d'Azureus, un plug-in Azureus permettait d'étendre le logiciel et d'améliorer les performances en permettant des chercher des pairs autres que ceux fournis par le tracker : cette recherche de pairs se faisait sur une DHT basée sur Kademlia.
+
+Dans Vuze, ce plug-in a été intégré pour que cette fonctionnalité devienne native. Toutefois, le changement de nom du projet et ce passage de plug-in à fonctionnalité native n'a pas été suivi d'une refonte du code mais plutôt d'une rapide retouche.
+
+Ainsi, le code du projet Vuze comprend de très nombreuses références au nom Azureus, et la fonctionnalité désormais native voit une partie de son code placée dans les packages plug-ins...
+
+### Recherche d'un point d'entrée ###
+
+Nous avons donc cherché un point d'entrée dans les 4000 classes du projet. Le première chose qui nous a frappé est la manque flagrant de documentation. Toutefois, nous avons essayé de mener une analyse du code afin de voir ce qu'il était possible de faire.
+
+Dans l'interface com.aelitis.azureus.core.dht.DHT, on trouve
+
+```
+/**
+ * @param key
+ * @param max_values
+ * @param timeout
+ * @param listener
+ */
+
+public void
+get(
+	byte[]			key,
+	String			description,
+	byte			flags,
+	int			max_values,
+	long			timeout,
+	boolean			exhaustive,
+	boolean			high_priority,
+	DHTOperationListener	listener );
+
+/* ... */
+
+/**
+ * default is HIGH PRIORITY. if you change to low priority then do so consistently as
+ * operations can get out of order otherwise
+ * @param key
+ * @param description
+ * @param value
+ * @param flags
+ * @param high_priority
+ * @param listener
+ */
+
+public void
+put(
+	byte[]			key,
+	String			description,
+	byte[]			value,
+	byte			flags,
+	boolean			high_priority,
+	DHTOperationListener	listener);
+```
+
+Les paramètres semblent difficiles à renseigner et on ne connaît pas leurs formes. Nous avons donc essayé de regarder du côté des classes qui implémentent cette interface. La classe DHTImpl fait quelques milliers de lignes et ne fait que déléguer à une autre classe dont il est difficile de comprendre la fonction.
+
+## Plan-X ##
+
+Plan-X est un projet de stockage persistant et distribué de documents XML mené à l'université de Compenhague par différents intervenants. Parmi eux, Thomas Ambus a œuvré à l'implémentation d'une couche Kademlia pour ce projet (un autre de ses projets est de créer une interface permettant d'obtenir des ressources à partir d'une requête XPath).
+
+http://plan-x.org/xmlstore/
+
+http://www.thomas.ambus.dk/plan-x/
+
+Avant de découvrir Plan-X, nous étions inquiet quant à l'issue du projet. Cette nouvelle perspective nous a permis de reprendre nos travaux sur des bases saines.
+
+### Point d'entrée ###
+
+Étant donné la qualité de l'application fournie (documentation complète, tests unitaires, conception élégante), trouver un point d'entrée fut immédiat.
+
+Le classe que nous allons principalement utilisé est Kademlia. Chaque pair doit faire fonctionner une instance de Kademlia.
+
+![http://ter-peerunit-kad.googlecode.com/files/DiagClassKademlia.png](http://ter-peerunit-kad.googlecode.com/files/DiagClassKademlia.png)
+
+Kademlia implémente l'interface DistributedMap qui fourni les opérations attendues pour une table de hachage (get et put).
+
+Kademlia propose, parmi d'autres opérations, la connexion à un autre pair à partir de son adresse réseau.
+
+Les identifiants (pour les pairs et les clés), sont représentés par la classe Identifier. Par défaut, l'identifiant (qui est un BigInteger) est codé sur 128 bits.
+
+Enfin, on peut configurer différents aspects de la DHT en modifiant les différents attributs (publics) d'une instance de la classe Configuration.
+
+Quelques exemples :
+
+```
+// Création de deux pairs sur la machine locale et connexion
+Kademlia kad1 = new Kademlia(Identifier.randomIdentifier(), 3333);
+Kademlia kad2 = new Kademlia(Identifier.randomIdentifier(), 4444);
+
+kad2.connect(new InetSocketAddress(InetAddress.getLocalHost(), 3333));
+```
+
+Suite à ça, on peut faire des opération sur le DHT
+```
+Identifier id = Identifier.randomIdentifier();
+
+kad1.put(id, "Bonjour");
+
+String result = (String) kad2.get(id);
+assertEquals("Bonjour", result);
+```
+
+## Kademlia ##
+
+Décrire brièvement mais formellement le protocole (~ 1 page)
+
+voir [Kademlia](Kademlia.md)
+
+## PeerUnit ##
+
+La problématique du test logiciel est un des aspects centraux de la qualité logicielle, si bien qu'un module entier (optionnel) de notre formation y est consacré.
+
+Pour le test d'applications typiques, on utilise le framework XUnit : il s'agit d'un outil permettant d'écrire et de valider automatiquement des tests « unitaires » : c'est à dire que chaque test porte sur une unité du code, dans les langages objets, l'unité est la classe. Pour chaque classe, on écrit une classe de test. En Java, Junit fait partie des frameworks de type XUnit.
+
+Toutefois, dans une application répartie, plusieurs problèmes peuvent se poser lorsqu'on fait des tests unitaires. Le test unitaire était un programme comme un autre, il fonctionne en local, sur une machine à la fois. L'application distribuée se retrouve donc avec tous ses éléments censés être répartis en local. Les tests vont donc être menés comme si l'application était centralisée.
+
+Ainsi, on ne peut pas vérifier si
+  * Le système passe bien à l'échelle. Si on suppose que la machine qui fait les tests ne peut supporter que 10 pairs : comment vérifier ce qu'il se passe lorsqu'on a 10 000 pairs ou plus. Ne pas pouvoir faire cette vérification est un problème majeur : si on a cherché à répartir l'application, c'est justement parce que l'application ne peut être supportée par une seule machine ;
+  * Le système est robuste aux problèmes de transmission (si tous les pairs sont en local, aucun risque de problème, alors que sur un réseau vaste comme Internet les problèmes sont fréquents) ;
+  * Le système fonctionne sur une topologie de réseau complexe.
+
+On voit donc que les tests unitaires ne permettent pas de tester une application pair à pair en examinant son comportement réel. C'est pourquoi l'outil PeerUnit a été créé.
+
+Dans PeerUnit, chaque test peut porter sur plusieurs pairs répartis sur différentes machines et connectés à travers le réseau. Une des principales problématiques pour tester une application répartie est le parallélisme. Même si chaque pair a fait son travail dans le bon ordre, le résultat n'est pas le même. Dans PeerUnit, les pairs sont synchronisés par un coordinateur. C'est un programme indépendant connecté à tous les pairs et qui permet éventuellement de partager des informations entre pairs afin que les tests puissent se dérouler.
+
+
+
+
+# Partie 3 et plus #
+  * Test effectués...
+  * Problèmes rencontrés
+
+(Désolé pour le francais quelques fois plus que douteux Oo)
+
+# Les différentes fonctions permettant de faire des tests Distribués. #
+
+> Page PeerUnit par exemple.
+
+
+# Test 1 #
+
+  * Ce test nous a servi à expérimenter le framework PeerUnit, ainsi que PlanX. Ce premier test n'est composé que de deux pairs. Il a pour but de vérifier qu'un pair A peut récupérer une valeur postée par un pair B sur le réseau.
+Le premier pair, appelé « Peer1 » se connecte au réseau, il va alors ajouter une chaine de caractères pouvant être récupérée et partagée par d'autres pairs.
+  * Ensuite un deuxième pair, appelé « Peer2 », se connecte au premier pair ~~-bootStrap-~~. Il va essayer de récupérer cette chaine. Nous faisons alors le test d'égalité, « AssertEquals », sur la valeur récupérée avec la chaine de caractères espérée. Ce test réussi et ainsi se termine.
+```
+         /**
+	 * Le pair 0 va alors mettre une chaine de caractere  sur la DHT
+	 *  ayant comme identifiant newAbsId(220)
+	 * 
+	 */
+    @Test(place=0,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad.put(newAbsId(220), "Bonjour");
+    }
+    /**
+	 * Les pairs 2 à 8 vont alors essayer de recuperer 
+	 * la chaine de caractere postee par le premier pair
+	 * 
+	 */
+    @Test(place=1,timeout=1000000, name = "action4", step = 0)
+    public void testConnect5() throws Exception{
+    	String result = (String)kad.get(newAbsId(220));
+    	assertEquals(result,"Bonjour");
+    }	
+```
+
+  * Dès que  nous avions fini ce test, ils ne nous restaient plus qu'à essayer d'implémenter de nouveaux tests plus perfectionnés.
+
+> ![http://ter-peerunit-kad.googlecode.com/files/Test1.jpeg](http://ter-peerunit-kad.googlecode.com/files/Test1.jpeg)
+
+# Test 2 #
+
+  * Pour ce deuxième test, nous voulions recommencer la même démarche que précédemment mais en rajoutant un nombre plus grand de pairs. Ainsi nous avons décidé d'effectuer le même test mais en rajoutant six autres pairs.
+  * Tout comme le premier test, le « Peer1 » se connecte au réseau et poste une chaine de caractères. Ensuite les sept autres pairs, nommés de « Peer2 » à « Peer8 », se connectent au premier. Chacun essaye alors de récupérer la chaine stockée par le premier pair.
+```
+         /**
+	 * Connexion de 7 autres pairs avec le pair 0.
+	 * Chacun des pairs va récupérer l'adresse IP du premier pair
+	 * pour se connecter. 
+	 * 
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action1", step=0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32),port1,conf);
+    	//les pairs vont recuperer l'adresse du pair 0 sur la Map
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+        /**
+	 * Le pair 0 va alors mettre une chaine de caractères  sur la DHT
+	 *  ayant comme identifiant newAbsId(220)
+	 * 
+	 */
+	@Test(place=0,timeout=1000000, name = "action2", step = 0)
+	public void testConnect3() throws Exception{
+		kad.put(newAbsId(220), "Bonjour! Bonjour!!");
+	}
+```
+  * Avec les chaines de caractères prises par ces pairs, on essaye de tester la validité de chacune d'elle avec la chaine attendue. Le test se termine alors avec succès.
+```
+	
+	/**
+	 * Les pairs 2 à 8 vont alors essayer de récupérer 
+	 * la chaine de caractère postée par le premier pair
+	 * 
+	 */
+	@Test(from=1,to=7,timeout=1000000, name = "action3", step = 0)
+	public void testConnect4() throws Exception{
+		String result= (String)kad.get(newAbsId(220));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Bonjour");
+    }
+```
+
+> ![http://ter-peerunit-kad.googlecode.com/files/Test2.jpeg](http://ter-peerunit-kad.googlecode.com/files/Test2.jpeg)
+
+# Test 3 #
+
+  * Dans Kademlia, une fonctionnalité permet de recopier des valeurs stockées par d'autres pairs sur d'autres pairs automatiquement. Cette recopie est gérer par un objet Configuration, qui, lorsqu'il est placé dans les paramètres du constructeur d'un pair, permet d'instaurer de nouvelles configurations de réseau. Nous avons donc essayé de tester cette méthode de configuration, en recopiant toutes les valeurs au premier pair qui rejoint ce réseau après de nouveaux ajouts (~~Ca veut rien dire je pense mais j'arrive pas à formuler ma phrase~~ -> c'est pour ça que j'ai eu du mal à comprendre ^^ jusqu'à mettre en doute ce qu'on avait voulu faire).
+  * Donc tout comme les premiers tests, un premier pair va se connecter au réseau. Trois autres pairs vont ensuite se connecter au premier. Le « Peer2» va alors stocker la chaine de caractère « Bonjour » dans la DHT.
+```
+ /**
+     * Connexion du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+    	this.put(1, InetAddress.getLocalHost());
+    	//le pair 0 poste son @ IP sur la Map du Coordinateur
+        kad = new Kademlia(newAbsId(getPeerId()),port1,conf);  
+    }  
+    /**
+	 * Connexion des pairs 1 à 3 avec le pair 0.
+	 * Chacun des pairs va récupérer l'adresse IP du premier pair
+	 * pour se connecter. 
+	 * 
+	 */
+    @Test(from=1,to=3,timeout=1000000, name = "action1", step = 0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32), port1,conf);
+    	//les pairs vont récupérer l'adresse du pair 0 sur la Map
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }   
+    /**
+	 * Le pair 1 va alors poster une chaine de caractères sur la DHT
+	 *  ayant comme identifiant newAbsId(200)
+	 * 
+	 */
+    @Test(place=1,timeout=1000000, name = "action2", step = 0)
+    public void testConnect3() throws Exception{
+    	kad.put(newAbsId(200),"Bonjour");
+    }
+```
+
+> ![http://ter-peerunit-kad.googlecode.com/files/test3partie1.jpeg](http://ter-peerunit-kad.googlecode.com/files/test3partie1.jpeg)
+
+  * Une fois que le deuxième pair a ajouté cette chaine de caractères, quatre autres pairs, « Peer5 », « Peer6 », « Peer7 »et « Peer8 », vont alors tenter de se connecter au premier pair. Si tout se passe comme prévu le cinquième pair devrait avoir la chaine de caractères « Bonjour » stockée.
+```
+@Test(from=4,to=7,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad = new Kademlia(newAbsId(getPeerId()*32),port1,conf);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+```
+> ![http://ter-peerunit-kad.googlecode.com/files/test3partie2.jpeg](http://ter-peerunit-kad.googlecode.com/files/test3partie2.jpeg)
+
+  * Les pairs un, deux, trois et quatre se déconnectent. Il ne nous restent plus que quatre pairs et si la recopie ne s'est pas faite, nous n'avons plus aucune valeur dans la DHT. C'est alors que l'on demande au cinquième pair de récupérer la chaine de caractère postée par le deuxième. On effectue un test d'égalité sur la valeur  récupérée avec la chaine de caractères que l'on souhaite. Ce test réussi et se termine avec succès.
+```
+     /**
+     * On ferme les 4 premieres connections ouvertes
+     */
+    @Test(from=0,to=3,timeout=1000000, name = "action5", step = 0)
+    public void testConnect5() throws Exception{
+    	kad.close();
+    }
+    /**
+     * Le pair 4 va tenter de récupérer la chaine de caractères
+     * postee par le pair 1
+     */
+    @Test(place=4,timeout=1000000, name = "action6", step = 0)
+    public void testConnect6() throws Exception{
+    	String result=(String)kad.get(newAbsId(200));
+    	//Test d'egalite des deux chaines
+    	assertEquals(result,"Bonjour");
+    }
+```
+> ![http://ter-peerunit-kad.googlecode.com/files/test3partie3.jpeg](http://ter-peerunit-kad.googlecode.com/files/test3partie3.jpeg)
+
+# Test 4 #
+
+  * Ce test a pour but de vérifier que la recopie est bien effectuée par le réseau lorsque un nœud se déconnecte. Par exemple, si nous avons K pairs pour le recopiage des valeurs, et si K-1 de ces pairs se déconnectent alors nomalement une opération recopiage doit être effectuée sur les autres noeuds du réseau de telle sorte qu'on devrait toujours avoir K pairs possédant les copies.
+  * Nous voulions aussi changer notre topologie de réseau, donc nous avons créé une topologie en BUS, c'est-à-dire que chaque noeud, qui se connecte au reseau, doit se connecter au pair précedement connecté. Une fois que tous nos pairs sont connectés, le premier pair poste la chaine de caractères « Bonjour ».
+```
+     /**
+     * Connexion du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+    	//le pair 0 poste son @ IP sur la Map du Coordinateur
+    	kad = new Kademlia(newAbsId(getPeerId()), port1,conf);
+    }
+	
+	/**
+	 * Connexion de 7 autres pairs avec le pair précédemment connecté (topologie bus)
+	 * @throws Exception
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action0", step = 1)
+    public void testConnect2() throws Exception{
+    	//chaque pair poste son @ IP sur la Map du Coordinateur
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+    	kad = new Kademlia(newAbsId(getPeerId()), port1,conf);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(getPeerId()-1), port1));
+    }
+    
+         /**
+	 * Le pair 1 va poster une chaine de caractères  sur la DHT
+	 *  ayant comme identifiant newAbsId(10)
+	 * 
+	 */
+	@Test(place=0,timeout=1000000, name = "action0", step = 2)
+	public void testConnect3() throws Exception{
+		kad.put(newAbsId(10),"Bonjour");
+	}
+```
+> > ![http://ter-peerunit-kad.googlecode.com/files/test4partie1.jpeg](http://ter-peerunit-kad.googlecode.com/files/test4partie1.jpeg)
+
+  * Les informations sont alors recopiées dans les pairs deux et trois. Si l'on déconnecte le pair un et deux, il reste plus que le pair trois qui possède les informations. Si tout se déroule correctement la recopie doit être faites sur les pairs quatre et cinq.
+```
+        /**
+	 * on ferme le noeud 1 et 2
+	 */
+	@Test(from=0,to=1,timeout=1000000, name = "action0", step = 3)
+	public void testConnect4() throws Exception{
+		kad.close();
+	}
+	/**
+	 * on attend que la restauration prenne place, 
+	 * le mapping doit être copié au pair 3,4
+	 * on ferme ensuite le pair 3
+	 * 
+	 */
+	@Test(place=2,timeout=1000000, name = "action0", step = 4)
+	public void testConnect5() throws Exception{
+	    synchronized(this){
+	    	wait(10000);
+            }
+            kad.close();
+	}
+	/**
+	 * On essaye de recuperer la chaine de caractere 
+	 * publie par le noeud 1 avec le noeud 4
+	 * 
+	 */
+	@Test(place=3,timeout=1000000, name = "action0", step = 6)
+	public void testConnect6() throws Exception{
+		String result=(String)kad.get(newAbsId(10));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Ceci est le 4eme test");
+	}
+```
+
+
+> ![http://ter-peerunit-kad.googlecode.com/files/test4partie21.jpeg](http://ter-peerunit-kad.googlecode.com/files/test4partie21.jpeg)
+
+  * Pour tester cela, on déconnecte le pair trois et on essaye de récuperer la valeur postée par le premier pair avec le quatrième pair. On test l'égalité de la chaine de caractères reçue avec celle désirée. Le test réussit et se termine avec succès.
+```
+/**
+	 * on attend que la restauration prenne place, 
+	 * le mapping doit etre copie au pair 3,4
+	 * on ferme ensuite le pair 3
+	 * 
+	 */
+	@Test(place=2,timeout=1000000, name = "action0", step = 4)
+	public void testConnect5() throws Exception{
+            kad.wait(10000);
+            kad.close();
+	}
+	/**
+	 * On essaye de recuperer la chaine de caractere 
+	 * publie par le noeud 1 avec le noeud 4
+	 * 
+	 */
+	@Test(place=3,timeout=1000000, name = "action0", step = 6)
+	public void testConnect6() throws Exception{
+		String result=(String)kad.get(newAbsId(10));
+		//Test d'egalite des deux chaines
+		assertEquals(result,"Ceci est le 4eme test");
+	}
+```
+> ![http://ter-peerunit-kad.googlecode.com/files/test4partie2.jpeg](http://ter-peerunit-kad.googlecode.com/files/test4partie2.jpeg)
+
+# Test 5 #
+
+  * Nous voulions essayer de voir si un pair pouvais stocker qu'une seul valeur dans la DHT. Après quelques recherches, nous nous sommes aperçus que cela était possible, toujours grâce à la classe Configuration.
+  * Nous nous somme alors penchés sur notre cinquième test. Il ne comporte que 2 pairs car cela nous était suffisant pour tester la suppression de plusieurs valeurs ajoutées par le même pair.
+  * Ainsi nous connectons deux pairs ensembles, comme pour le test 1. Le premier pair va alors stocker deux valeurs. Il faut, pour que la deuxième valeur soit supprimer, faire patienter les deux pairs pour que la suppression se fasse.
+```
+     /**
+     * Connection du premier pair au reseau,
+     * il poste ensuite son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * Il va poster ensuite deux chaines de caractere
+     * 
+     */
+	@Test(place=0,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+		this.put(1, InetAddress.getLocalHost());
+    	kad = new Kademlia(Identifier.randomIdentifier(), port1);
+    	kad.put(newAbsId(100), "Premiere chaine de caractere");
+    	kad.put(newAbsId(200), "deuxieme chaine de caractere");
+    }
+    @Test(place=1,timeout=1000000, name = "action1", step = 0)
+    public void testConnect2() throws Exception{
+    	kad = new Kademlia(Identifier.randomIdentifier(), port1);
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(1), port1));
+    }
+```
+
+> ![http://ter-peerunit-kad.googlecode.com/files/Test5partie11.jpeg](http://ter-peerunit-kad.googlecode.com/files/Test5partie11.jpeg)
+
+  * Ensuite le deuxième pair se déconnecte. Le premier pair essaye de récupérer la première ainsi que la deuxième chaine de caractères qu'il a stocké.On effectue un test d'égalité sur la première chaine de caractère avec le résultat escompté, et un test d'égalité sur la deuxième chaine de caractères avec un pointeur nul. Les deux tests réussissent et se termineent avec succès.
+```
+  @Test(place=1,timeout=1000000, name = "action3", step = 0)
+    public void testConnect3() throws Exception{
+    	synchronized (this) {
+            wait(1000);
+        }
+    	kad.close();
+    }
+    @Test(place=0,timeout=1000000, name = "action4", step = 0)
+    public void testConnect4() throws Exception{
+    	String result1 = (String) kad.get(newAbsId(100));
+    	String result2 = (String) kad.get(newAbsId(200));
+    	kad.close();
+    	assertEquals(result1,"Premiere chaine de caractere");
+    	assertEquals(result2,null);
+    }
+```
+> > ![http://ter-peerunit-kad.googlecode.com/files/Test5partie12.jpeg](http://ter-peerunit-kad.googlecode.com/files/Test5partie12.jpeg)
+
+# Test6 #
+
+  * our ce test,nous voulions essayer une nouvelle architecture ainsi que de vérifier   la gestion des données dans un reseau kadmelia. C'est pourqoi, nous avons choisi la topologie en anneau. Pour mettre en place cette topologie, il faut connecter les pairs comme un topologie en BUS, sauf que le premier pair doit se connecter avec le dernier pair. Nous voulions tester la methode remove() de Kademlia pour essayer de voir si un tiers pair peut supprimer les valeurs postées par d'autres pairs.
+```
+     /**
+     * Connection des pair au reseau,
+     * chacun d'entre poste son adresse IP sur la Map
+     * du Coordinateur de PeerUnit pour que les autres pairs
+     * puissent se connecter.
+     * 
+     */
+    @Test(place=-1,timeout=1000000, name = "action0", step = 0)
+    public void testConnect1() throws Exception{
+        //chaque pair poste son @ IP sur la Map du Coordinateur
+    	this.put(getPeerId(), InetAddress.getLocalHost());
+        kad = new Kademlia(newAbsId(getPeerId()),port1,conf);  
+    }
+    /**
+	 * on connecte entre eux les pairs pour obtenir une topologie en anneau
+	 *
+	 */
+    @Test(from=1,to=7,timeout=1000000, name = "action1", step = 1)
+    public void testConnect2() throws Exception{
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(getPeerId()-1), port1));
+    }
+    /**
+     * Connection du pair 1 avec le pair 8 pour former une topologie
+     * en anneau.
+     * Il va poster la chaine de caractère "Bonjour" 
+     * 
+     */
+    @Test(place=0,timeout=1000000, name = "action2", step = 0)
+    public void testConnect3() throws Exception{
+    	kad.connect(new InetSocketAddress((InetAddress) this.get(7), port1));
+    	kad.put(newAbsId(200),"Bonjour");
+    }
+```
+
+  * insi une fois que tous les pairs sont connectés, le premier pair à s'être connecté au reseau poste une chaine de caractères. Le pair trois va alors tenté de supprimer cette valeur. Ensuite, il essaye récupérer la chaine pensant que celle-ci est nulle. Mais la valeur qu'il va récuperer est la même que celle posté par le pair numéro un.
+> > ![http://ter-peerunit-kad.googlecode.com/files/test6partie1.jpeg](http://ter-peerunit-kad.googlecode.com/files/test6partie1.jpeg)
+```
+     /**
+     * On va regarder si un pair peut supprimer une valeur postee 
+     * par un autre pair
+     * 
+     */
+    @Test(place=2,timeout=1000000, name = "action3", step = 0)
+    public void testConnect4() throws Exception{
+    	kad.put(newAbsId(220),"Test");
+    	kad.remove(newAbsId(200));
+    	//on attend que de voir si la chaine va etre supprimee
+    	synchronized (this) {
+            wait(1000);
+        }
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals("Bonjour",result);
+    	//le test reussi donc le pair 3 ne peut supprimer un valeur postee
+    	//par un autre pair
+    }
+```
+  * aintenant, c'est le premier pair qui va essayer de supprimer la valeur qu'il a posté ultérieurement. Le pair numéro trois va récupérer cette valeur, mais, en réponse à sa requête, la valeur retournée est un pointeur nul. Le test est alors réussi.
+```
+    @Test(place=0,timeout=1000000, name = "action2", step = 0)
+    public void testConnect5() throws Exception{
+    	//on supprime la chaine de caractère
+    	kad.remove(newAbsId(200));
+    	synchronized (this) {
+            wait(500);
+        }
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals(null,result);
+    	//le test reussi donc seulement le pair qui poste une information
+    	//peut la supprimer
+    }
+    /**
+     * On va tester si un pair peut recuperer la valeur supprimée
+     * @throws Exception
+     */
+    @Test(place=1,timeout=1000000, name = "action3", step = 0)
+    public void testConnect6() throws Exception{
+    	String result = (String) kad.get(newAbsId(200));
+    	assertEquals(null,result);
+    	//test reussi
+    }
+```
+> > ![http://ter-peerunit-kad.googlecode.com/files/test6partie2.jpeg](http://ter-peerunit-kad.googlecode.com/files/test6partie2.jpeg)
+
+**Ne pas hésiter à compléter/détailler (cliquez sur Edit this page ↑↑↑)**
